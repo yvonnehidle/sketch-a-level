@@ -55,6 +55,14 @@ class greenGhost
     mapPixels = drawnMap.pixels; // get those pixels!
     pixelValues = new float[9]; // we want a neighborhood of 9 pixels
     
+    float distance = dist(kittyRefX,kittyRefY,ghostX,ghostY);
+    if( abs(distance) < 200 )
+    {
+      ghostX = int( random(100, width-100) );
+      ghostY = int( random(100, height-100) );
+      println("NEW VALUE: Green ghost");
+    }
+    
     // check for problems!
     println("LOAD ONCE: Green ghost map calibrated");
   }

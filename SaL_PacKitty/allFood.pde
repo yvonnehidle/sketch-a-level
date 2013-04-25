@@ -9,6 +9,7 @@ class allFood
   
   // tasty fish
   float fishEaten;
+  float total_fishEaten;
   int fishSize;
   int tastyFishX;
   int tastyFishY;
@@ -16,9 +17,11 @@ class allFood
   
   // the ghosts
   float ghostsEaten;
+  float total_ghostsEaten;
   
   // kibbles!
   float kibbleEaten;
+  float total_kibbleEaten;
   int foodSize;
   final int foodMax = 100;
   int[] foodX;
@@ -26,6 +29,7 @@ class allFood
   PShape foodBits;
   
   // catnip!
+  float total_catNipEaten;
   int catNipX;
   int catNipY;
   float catNipS;
@@ -44,6 +48,7 @@ class allFood
     // FOOD VARIABLES NOW!
     // tasty fish
     fishEaten = 0;
+    total_fishEaten = 0;
     fishSize = 40;
     tastyFishX = int( random(0, width) );
     tastyFishY = int( random(0, height) );
@@ -51,9 +56,11 @@ class allFood
     
     // the ghosts
     ghostsEaten = 0;
+    total_ghostsEaten = 0;
 
     // kibbles!
     kibbleEaten = 0;
+    total_kibbleEaten = 0;
     foodSize = 20;
     foodX = new int[foodMax];
     foodY = new int[foodMax];
@@ -62,6 +69,7 @@ class allFood
     foodBits = loadShape("food.svg");
     
     // catnip!
+    total_catNipEaten = 0;
     catNipX = int( random(0, width) );
     catNipY = int( random(0, height) );
     catNipS = 25;
@@ -138,6 +146,7 @@ class allFood
         
         // kibble counter +1
         kibbleEaten++;
+        total_kibbleEaten++;
       }
     }
   }
@@ -183,6 +192,7 @@ class allFood
       
       // kibble eaten+1
       fishEaten++;
+      total_fishEaten++;
     }    
   }
   ////////////////////////////////////////////////////////
@@ -221,6 +231,9 @@ class allFood
     { 
       // cat grows
       //player.setMediaFile("catnip-grow.wav");
+      
+      // count the catnip
+      total_catNipEaten++;
       
       // catnip relocates
       catNipX = int( random(0, width) );

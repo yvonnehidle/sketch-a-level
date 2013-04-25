@@ -29,6 +29,8 @@
   PImage drawnMap;
   PImage game_start;
   PImage game_continue;
+  PImage game_score;
+  PImage game_restart;
   
   // general game variables
   int gamePhase;
@@ -71,6 +73,8 @@ void setup()
   drawnMap = loadImage("map.png");
   game_start = loadImage("game_start.png");
   game_continue = loadImage("game_continue.png");
+  game_score = loadImage("game_score.png");
+  game_restart = loadImage("game_restart.png");
   
   // general game variables
   gamePhase=0;
@@ -127,23 +131,6 @@ void draw()
   else if(gamePhase == 2)
   {
     myMap.drawSymbols();
-    
-    if(
-    mousePressed == true &&
-    mouseX > 10 && 
-    mouseX < myMap.menu_start_game.width && 
-    mouseY > 0 && 
-    mouseY < myMap.menu_start_game.height &&
-    myMap.is_map_ready == true
-    )
-    {  
-      // intialize these classes once, and only once
-      myBlue.resetMap();
-      myGreen.resetMap();
-      myRed.resetMap();
-      myKitty.resetMap();
-      myFood.resetMap();
-    }
   }
   
   // SHOW LEVEL GOALS
@@ -178,7 +165,7 @@ void draw()
   // if you want to see your score, go here
   else if(gamePhase == 7)
   {
-    //showScore();
+    showScore();
   }
   
   // check for problems!
@@ -248,6 +235,16 @@ void showGoals()
 {
   // countdown, 5 seconds until game starts
   int countDown = 5000;
+  
+  // intialize these classes once, and only once
+  if(levelNum == 1 && (millis()-startTime) > 2000 && (millis()-startTime) < 2500)
+  {
+    myBlue.resetMap();
+    myGreen.resetMap();
+    myRed.resetMap();
+    myKitty.resetMap();
+    myFood.resetMap();
+  }
   
   // show goal image
   background(goalImage);
@@ -320,7 +317,7 @@ void playNow()
   myGreen.play();
   
   // winning and losing
-  //lose();
+  lose();
   win();
   
   // check for problems!
@@ -364,7 +361,7 @@ void gameMenu()
 void win()
 {
   if (myFood.kibbleEaten >= goalKibbles && myFood.fishEaten >= goalFish)
-  {
+  {    
     // new level
     levelNum++;
     
@@ -383,6 +380,7 @@ void win()
     myFood.kibbleEaten = 0;
     myFood.fishEaten = 0;
     myFood.ghostsEaten = 0;
+    
     
     // pacKitty wins this level!
     playMusicOnce = true;
@@ -466,6 +464,19 @@ void showDeath()
   // show intro image!
   background(deathImage);
   
+  // show the continue button
+  pushStyle();
+    imageMode(CORNER);
+    image(game_score,
+          70,
+          150
+          );
+    image(game_restart,
+          70,
+          150 + game_score.height + 20
+          );
+  popStyle();
+  
   // play the music only once!
   if(playMusicOnce == true)
   {
@@ -474,11 +485,30 @@ void showDeath()
     playMusicOnce = false; 
   }
   
-  // if the user touches the screen, go to the intro page
-  if (mousePressed)
+  // if the user touches the score button, show the score
+  if (
+  mousePressed == true &&
+  mouseX > 70 &&
+  mouseX < 70 + game_score.width &&
+  mouseY > 150 &&
+  mouseY < 150 + game_score.height
+  )
   {
-    // clear the background once, make it white
-    background(255);
+    println("SCORE!");
+    // change our game phase to 7
+    gamePhase = 7;
+  }
+  
+  // if the user touches the restart button, go to the intro page
+  if (
+  mousePressed == true &&
+  mouseX > 90 &&
+  mouseX < 90 + game_restart.width &&
+  mouseY > 150 + game_score.height &&
+  mouseY < 150 + game_score.height + 20 + game_restart.height
+  )
+  {
+    println("RESTART TO INTRO");
     // change our game phase to 0
     playMusicOnce = true;
     gamePhase = 0;
@@ -486,6 +516,55 @@ void showDeath()
   
   // check for problems!
   //println("LOOPING: Show death screen");
+}
+////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////
+// SCORE SCREEN
+// how much you have eaten total!
+////////////////////////////////////////////////////////
+void showScore()
+{
+  // show intro image!
+  background(goalImage);
+  
+  // show the continue button
+  pushStyle();
+    imageMode(CORNER);
+    image(game_restart,
+          width -  game_restart.width - 20,
+          height - game_restart.height - 70
+          );
+  popStyle();
+  
+  // if the user touches the screen, show our new goals
+  if (
+  mousePressed == true &&
+  mouseX > width - game_restart.width - 20 &&
+  mouseX < width &&
+  mouseY > height - game_restart.height - 70 &&
+  mouseY < height
+  )
+  {
+    // proceed to intro map
+    gamePhase = 0;
+  }
+  
+  // display your score
+  pushStyle();
+    textAlign(CENTER);
+    fill(0);      
+    textSize(20);
+    text("Highest Level: " + nf(levelNum,0,0), width/2, height/2-160);
+    text("Kibbles Eaten: " + nf(myFood.total_kibbleEaten,0,0), width/2, height/2-120);
+    text("Tasty Fish Eaten: " + nf(myFood.total_fishEaten,0,0), width/2, height/2-80);
+    text("Ghosts Eaten: " + nf(myFood.total_ghostsEaten,0,0), width/2, height/2-40);
+    text("Cat Nip Eaten: " + nf(myFood.total_catNipEaten,0,0), width/2, height/2);
+  popStyle();
 }
 ////////////////////////////////////////////////////////
 
