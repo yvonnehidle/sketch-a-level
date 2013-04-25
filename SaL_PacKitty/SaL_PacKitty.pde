@@ -282,7 +282,7 @@ void playNow()
   myGreen.play();
   
   // winning and losing
-  lose();
+  //lose();
   //win();
   
   // check for problems!

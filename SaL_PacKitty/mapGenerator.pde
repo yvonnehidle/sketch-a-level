@@ -217,7 +217,7 @@ class mapGenerator
   // MAP GENERATOR GOES HERE
   ////////////////////////////////////////////////////////
   void theMenu()
-  { 
+  {     
     // SAVE THE MAP
     // if save button is pressed, save image to data folder
     if(  
@@ -404,18 +404,7 @@ class mapGenerator
     }
     
     
-    // MENU BUTTONS
-    // new map has not been saved
-    if(is_map_drawn == false)
-    {
-      menu_save_this_map = loadImage("menu_save-this-map.png");
-    }
-    // map has already been saved
-    else
-    {
-      menu_save_this_map = loadImage("menu_map-saved.png");
-    }
-    
+    // MENU BUTTONS   
     // save map
     image(menu_save_this_map, 10, 0);
     // draw walls
