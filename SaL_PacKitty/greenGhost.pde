@@ -56,7 +56,7 @@ class greenGhost
     pixelValues = new float[9]; // we want a neighborhood of 9 pixels
     
     // check for problems!
-    //println("LOAD ONCE: Green ghost map calibrated");
+    println("LOAD ONCE: Green ghost map calibrated");
   }
   ////////////////////////////////////////////////////////
 

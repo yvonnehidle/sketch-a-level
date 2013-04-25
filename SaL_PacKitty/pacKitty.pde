@@ -62,7 +62,7 @@ class pacKitty
     drawnMap.loadPixels(); // load the pixels of our map, just once!
     
     // check for problems!
-    //println("LOAD ONCE: Kitty map calibrated");
+    println("LOAD ONCE: Kitty map calibrated");
   }
   ////////////////////////////////////////////////////////
   
@@ -173,39 +173,39 @@ class pacKitty
     // ON WALL
     // if the brightness of the pixel is less than our darkness threshold
     // then do not move the kitty
-    if(brightness(drawnMap.pixels[loc]) < darknessThreshold)
-    {
-      if(mousePressed == true)
-      {
-        // target our finger
-        fingerX = mouseX;
-        fingerY = mouseY;
-        distanceX = fingerX - kittyX;
-        distanceY = fingerY - kittyY;
-    
-        if(distanceX > 0)
-        {
-          kittyX = kittyX + 1;
-        }
-        if(distanceX < 0)
-        {
-          kittyX = kittyX - 1;
-        }
-        if(distanceY > 0)
-        {
-          kittyY = kittyX + 1;
-        }
-        if(distanceY < 0)
-        {
-          kittyY = kittyY - 1;
-        }
-      }
-    }
+//    if(brightness(drawnMap.pixels[loc]) < darknessThreshold)
+//    {
+//      if(mousePressed == true)
+//      {
+//        // target our finger
+//        fingerX = mouseX;
+//        fingerY = mouseY;
+//        distanceX = fingerX - kittyX;
+//        distanceY = fingerY - kittyY;
+//    
+//        if(distanceX > 0)
+//        {
+//          kittyX = kittyX + 1;
+//        }
+//        if(distanceX < 0)
+//        {
+//          kittyX = kittyX - 1;
+//        }
+//        if(distanceY > 0)
+//        {
+//          kittyY = kittyX + 1;
+//        }
+//        if(distanceY < 0)
+//        {
+//          kittyY = kittyY - 1;
+//        }
+//      }
+//    }
     
     // NOT ON WALL
     // else always move the kitty
-    else
-    {
+//    else
+//    {
       if(mousePressed == true)
       {
         // target our finger
@@ -223,7 +223,7 @@ class pacKitty
           kittyY += distanceY * kittyE;
         }
       }
-    }
+//    }
     
     
     // CONSTRAIN KITTY TO THE BOUNDS OF THE MAP

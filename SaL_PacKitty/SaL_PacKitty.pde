@@ -121,42 +121,75 @@ void draw()
   }
   
   // MAP GENERATION SCREEN
-  // this is a drawing program where you draw your map
+  // this is a drawing program
+  // you draw walls
   else if(gamePhase == 1)
   {
-    drawMap();
+    myMap.drawMap();
+  }
+  
+  // SYMBOL GENERATION SCREEN
+  // this is a contiunation of the drawing program
+  // you place symbols
+  else if(gamePhase == 2)
+  {
+    myMap.drawSymbols();
+    
+    if(
+    mousePressed == true &&
+    mouseX > 10 && 
+    mouseX < myMap.menu_start_game.width && 
+    mouseY > 0 && 
+    mouseY < myMap.menu_start_game.height &&
+    myMap.is_map_ready == true
+    )
+    {  
+      // intialize these classes once, and only once
+      myBlue.resetMap();
+      myGreen.resetMap();
+      myRed.resetMap();
+      myKitty.resetMap();
+      myFood.resetMap();
+    }
   }
   
   // SHOW LEVEL GOALS
   // this is the screen that shows your current level and goals
-  else if(gamePhase == 2)
+  else if(gamePhase == 3)
   {
     showGoals();
   }
   
   // PLAY THE GAME
   // this is the actual game that you play
-  else if(gamePhase == 3)
+  else if(gamePhase == 4)
   {
     playNow();
   }
   
   // LEVEL UP
   // the screen you see if you win the current level
-  else if(gamePhase == 4)
+  else if(gamePhase == 5)
   {
     //levelUp();
   }
   
-  // DEATH AND SCORE
-  // this is the screen you see after death, show level and goal achievements
-  else if(gamePhase == 5)
+  // DEATH
+  // this is the screen you see after death
+  else if(gamePhase == 6)
   {
     showDeath();
   }
   
+  // SCORE
+  // if you want to see your score, go here
+  else if(gamePhase == 7)
+  {
+    //showScore();
+  }
+  
   // check for problems!
-  //println(frameRate);
+  println(frameRate);
 }
 ////////////////////////////////////////////////////////
 
@@ -174,35 +207,12 @@ void showIntro()
   {
     // clear the background once, make it white
     background(255);
-    // change our game phase to 1
+    // proceed to drawing the map
     gamePhase = 1;
   }
   
   // check for problems!
   //println("LOOPING: Show introduction");
-}
-////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////
-// MAP GENERATION SCREEN
-// this is a drawing program where you draw your map
-////////////////////////////////////////////////////////
-void drawMap()
-{
-  myMap.drawNow();
-  
-  if(myMap.is_map_drawn == true)
-  {  
-    // intialize these classes once, and only once
-    myBlue.resetMap();
-    myGreen.resetMap();
-    myRed.resetMap();
-    myKitty.resetMap();
-    myMap.is_map_drawn = false;
-  }
-  
-  // check for problems!
-  //println("LOOPING: Map generator");
 }
 ////////////////////////////////////////////////////////
 
@@ -235,7 +245,7 @@ void showGoals()
   // our countdown timer, after the time is up go play the game
   if ((millis()-startTime) > countDown)
   {
-    gamePhase=3;
+    gamePhase=4;
   }
   
   // check for problems!
@@ -250,8 +260,8 @@ void showGoals()
 void playNow()
 {
   // show the map the user drew
-  image(drawnMap, 0, 0);
-  //background(drawnMap);
+  //image(drawnMap, 0, 0);
+  background(drawnMap);
   
   // transfer variables from one class to another
   // to the red ghost
@@ -298,13 +308,13 @@ void gameMenu()
 {
   // hide the menu (temp fix)
   pushStyle();
-    fill(255);
+    fill(0);
     rect(0,0,width,50);
   popStyle();
   
   pushStyle();
     textAlign(LEFT);
-    fill(0);
+    fill(255);
     textSize(20);
     text("L E V E L : " + levelNum, 20, 30);
       
@@ -330,7 +340,7 @@ if (blueDeath < myKitty.kittyW && myFood.isCatHigh == false || greenDeath < myKi
 {
   // pacKitty dies!
   playMusicOnce = true;
-  gamePhase=5;
+  gamePhase=6;
 }
 
 }
@@ -353,7 +363,7 @@ void showDeath()
     playMusicOnce = false; 
   }
   
-  // if the user touches the screen, start the map generator!
+  // if the user touches the screen, go to the intro page
   if (mousePressed)
   {
     // clear the background once, make it white

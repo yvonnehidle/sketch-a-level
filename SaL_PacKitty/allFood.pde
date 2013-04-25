@@ -3,9 +3,6 @@
 ////////////////////////////////////////////////////////
 class allFood
 {
-  // map related
-  boolean[][] foodMap;
-  
   // reference
   float kittyRefX;
   float kittyRefY;
@@ -36,34 +33,14 @@ class allFood
   int startHigh;
   PShape catNip;
   
+  // map related
+  int darknessThreshold;
+  
   ////////////////////////////////////////////////////////
   // VARIABLES VALUES (CONSTRUCTOR)
   ////////////////////////////////////////////////////////
   allFood()
-  {
-    // MAKE THE MAP BLACK OR WHITE, HAVE THE FOOD GENERATE RIGHT
-    foodMap = new boolean[drawnMap.width][drawnMap.height];
-    color black = color(0);
-    color white = color(255);
-    
-    // looks through collision map rows
-    for (int i = 0; i < drawnMap.width; i++)
-    {
-      // looks through collision map columns
-      for (int j = 0; j < drawnMap.height; j++)
-      {
-        color c = drawnMap.get(i, j);
-        if (c == black)
-        {
-          foodMap[i][j] = false;
-        }
-        else if (c == white)
-        {
-          foodMap[i][j] = true;
-        }
-      }
-    }
-    
+  {   
     // FOOD VARIABLES NOW!
     // tasty fish
     fishEaten = 0;
@@ -98,7 +75,19 @@ class allFood
   ////////////////////////////////////////////////////////
   
   ////////////////////////////////////////////////////////
-  // SPAWNS THE KITTY FOOD
+  // RUN THIS ONLY ONCE!
+  ////////////////////////////////////////////////////////
+  void resetMap()
+  {
+    drawnMap.loadPixels(); // load the pixels of our map, just once!
+    
+    // check for problems!
+    println("LOAD ONCE: Food map calibrated");
+  }
+  ////////////////////////////////////////////////////////
+  
+  ////////////////////////////////////////////////////////
+  // SPAWNS THE FOOD
   ////////////////////////////////////////////////////////
   void spawn()
   {
@@ -113,30 +102,30 @@ class allFood
   // THE KIBBLES
   ////////////////////////////////////////////////////////
   void kibbles()
-  {   
-    // all for the kibbles
+  {
     for(int i=0; i<foodX.length; i++)
     {
-      // booleans for collision map
-      boolean up_left = false;
-      boolean up_right = false;
-      boolean down_right = false;
-      boolean down_left = false;
+      // what is the pixel number in the array?
+      int loc = int( foodX[i] + foodY[i] * drawnMap.width );
+      // do the cat and the food overlap?
+      float kittyEat = dist(kittyRefX,kittyRefY,foodX[i],foodY[i]);
       
-      // if any of these come back true there is a wall
-      up_left = foodMap[foodX[i]][foodY[i]];
-      up_right = foodMap[foodX[i]][foodY[i]];
-      down_right = foodMap[foodX[i]][foodY[i]];
-      down_left = foodMap[foodX[i]][foodY[i]];
+      // ON WALL
+      // if the brightness of the pixel is less than our darkness threshold
+      // then do not spawn any food!
+      if(brightness(drawnMap.pixels[loc]) < darknessThreshold || foodY[i] < 50)
+      {
+      }
       
-      // if there no wall, this x value is OK
-      if (up_left && up_right && down_right && down_left)
+      // NOT ON WALL
+      // else spawn us some food!
+      else
       {
         shape(foodBits, foodX[i], foodY[i], foodSize, foodSize);
       }
       
+      // EAT THE FOOD
       // if kitty overlaps food, eat it!
-      float kittyEat = dist(kittyRefX,kittyRefY,foodX[i],foodY[i]);
       if (kittyEat < foodSize)
       {
         // play eating sound
@@ -159,33 +148,29 @@ class allFood
   ////////////////////////////////////////////////////////
   void tastyFish()
   {
-    // booleans for collision map
-    boolean up_left = false;
-    boolean up_right = false;
-    boolean down_right = false;
-    boolean down_left = false;
-    
-    // if any of these come back true there is a wall
-    up_left = foodMap[tastyFishX][tastyFishY];
-    up_right = foodMap[tastyFishX][tastyFishY];
-    down_right = foodMap[tastyFishX][tastyFishY];
-    down_left = foodMap[tastyFishX][tastyFishY];
+    // what is the pixel number in the array?
+    int loc = int( tastyFishX + tastyFishY * drawnMap.width );
+    // do the cat and the food overlap?
+    float kittyEatFish = dist(kittyRefX,kittyRefY,tastyFishX,tastyFishY);
       
-    // if there no wall, this x value is OK
-    if (up_left && up_right && down_right && down_left)
+    // ON WALL
+    // if the brightness of the pixel is less than our darkness threshold
+    // then do not spawn any food!
+    if(brightness(drawnMap.pixels[loc]) < darknessThreshold || tastyFishY < 50)
+    {
+      tastyFishX = int( random(0, width) );
+      tastyFishY = int( random(0, height-50) );
+    }
+      
+    // NOT ON WALL
+    // else spawn us some food!
+    else
     {
       shape(tastyFish,tastyFishX,tastyFishY,fishSize,fishSize);
     }
-    
-    else if (up_left==false || up_right==false || down_right==false || down_left==false)
-    {
-      tastyFishX = int( random(0, width) );
-      tastyFishY = int( random(0, height) );
-    }
-    
-    // if kitty overlaps tastyfish, eat it!
-    float kittyEatFish = dist(kittyRefX,kittyRefY,tastyFishX,tastyFishY);
-    
+      
+    // EAT THE FOOD
+    // if kitty overlaps tastyfish, eat it!   
     if (kittyEatFish < fishSize)
     {
       // play eating sound
@@ -194,11 +179,11 @@ class allFood
       
       // hide the fish
       tastyFishX = int( random(0, width) );
-      tastyFishY = int( random(0, height) );
+      tastyFishY = int( random(0, height-50) );
       
       // kibble eaten+1
       fishEaten++;
-    }
+    }    
   }
   ////////////////////////////////////////////////////////
   
@@ -207,40 +192,31 @@ class allFood
   ////////////////////////////////////////////////////////
   void catNip()
   {
+    // what is the pixel number in the array?
+    int loc = int( catNipX + catNipY * drawnMap.width );
+    // do the cat and the food overlap?
+    float kittyEat = dist(kittyRefX,kittyRefY,catNipX,catNipY);
     // countdown for packitty's high
     int countDown = 16000;
-    
-    // booleans for collision map
-    boolean up_left = false;
-    boolean up_right = false;
-    boolean down_right = false;
-    boolean down_left = false;
-    
-    // if any of these come back true there is a wall
-    up_left = foodMap[catNipX][catNipY];
-    up_right = foodMap[catNipX][catNipY];
-    down_right = foodMap[catNipX][catNipY];
-    down_left = foodMap[catNipX][catNipY];
       
-    // if there no wall, this x value is OK
-    if (up_left && up_right && down_right && down_left && isCatHigh == false)
-    {
-      pushMatrix();
-      translate(catNipX,catNipY);
-      rotate( radians(frameCount) );
-      shape(catNip,0,0,catNipS,catNipS);
-      popMatrix();
-    }
-    
-    else if (up_left==false || up_right==false || down_right==false || down_left==false)
+    // ON WALL
+    // if the brightness of the pixel is less than our darkness threshold
+    // then do not spawn any food!
+    if(brightness(drawnMap.pixels[loc]) < darknessThreshold || tastyFishY < 50)
     {
       catNipX = int( random(0, width) );
       catNipY = int( random(0, height) );
     }
-    
-    // if kitty overlaps catnip, eat it!
-    float kittyEat = dist(kittyRefX,kittyRefY,catNipX,catNipY);
-    
+      
+    // NOT ON WALL
+    // else spawn us some food!
+    else
+    {
+      shape(catNip,catNipX,catNipY,catNipS,catNipS);
+    }
+      
+    // EAT THE FOOD
+    // if kitty overlaps catnip, eat it!   
     if (kittyEat < catNipS && isCatHigh == false)
     { 
       // cat grows
