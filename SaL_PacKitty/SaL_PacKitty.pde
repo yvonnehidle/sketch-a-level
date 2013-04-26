@@ -208,7 +208,8 @@ void showIntro()
   mouseX > width - game_start.width - 20 &&
   mouseX < width &&
   mouseY > height - game_start.height - 70 &&
-  mouseY < height
+  mouseY < height &&
+  gamePhase == 0
   )
   {
     // clear the background once, make it white
@@ -561,7 +562,7 @@ void showScore()
   // play the music
   if(playMusicOnce == true)
   {
-    player.setMediaFile("score.mp3");
+    player.setMediaFile("score.wav");
     player.start();
     playMusicOnce = false;
   }

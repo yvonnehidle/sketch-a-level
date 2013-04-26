@@ -77,6 +77,9 @@ class allFood
     startHigh = 0;
     catNip = loadShape("catnip.svg");
     
+    // map related
+    darknessThreshold = 150;
+    
     // check for problems!
     //println("LOAD ONCE: Food constructor");
   }

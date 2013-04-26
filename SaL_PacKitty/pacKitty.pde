@@ -47,7 +47,7 @@ class pacKitty
     lipTopClosed=false; // is packitty's top lip closed?
     
     // map related
-    darknessThreshold = 180;
+    darknessThreshold = 150;
     
     // check for problems!
     //println("LOAD ONCE: Kitty constructor");
@@ -165,55 +165,44 @@ class pacKitty
   {  
     // what is the pixel number in the array?
     int loc = int( kittyX + kittyY * drawnMap.width );
-    
-    // check for problems
-//    println("distanceX: " + distanceX);
-//    println("distanceY: " + distanceY);
+    // target our finger
+    fingerX = mouseX;
+    fingerY = mouseY;
+    distanceX = fingerX - kittyX;
+    distanceY = fingerY - kittyY;
     
     // ON WALL
     // if the brightness of the pixel is less than our darkness threshold
     // then do not move the kitty
-//    if(brightness(drawnMap.pixels[loc]) < darknessThreshold)
-//    {
-//      if(mousePressed == true)
-//      {
-//        // target our finger
-//        fingerX = mouseX;
-//        fingerY = mouseY;
-//        distanceX = fingerX - kittyX;
-//        distanceY = fingerY - kittyY;
-//    
-//        if(distanceX > 0)
-//        {
-//          kittyX = kittyX + 1;
-//        }
-//        if(distanceX < 0)
-//        {
-//          kittyX = kittyX - 1;
-//        }
-//        if(distanceY > 0)
-//        {
-//          kittyY = kittyX + 1;
-//        }
-//        if(distanceY < 0)
-//        {
-//          kittyY = kittyY - 1;
-//        }
-//      }
-//    }
+    if(brightness(drawnMap.pixels[loc]) < darknessThreshold)
+    {
+      if(mousePressed == true)
+      {   
+        if(distanceX > 0)
+        {
+          kittyX = kittyX - 1;
+        }
+        else if(distanceX < 0)
+        {
+          kittyX = kittyX + 1;
+        }
+        if(distanceY > 0)
+        {
+          kittyY = kittyY - 1;
+        }
+        else if(distanceY < 0)
+        {
+          kittyY = kittyY + 1;
+        }
+      }
+    }
     
     // NOT ON WALL
     // else always move the kitty
-//    else
-//    {
+    else
+    {
       if(mousePressed == true)
-      {
-        // target our finger
-        fingerX = mouseX;
-        fingerY = mouseY;
-        distanceX = fingerX - kittyX;
-        distanceY = fingerY - kittyY;
-        
+      {       
         if(abs(distanceX) > 1)
         {
           kittyX += distanceX * kittyE;
@@ -223,8 +212,7 @@ class pacKitty
           kittyY += distanceY * kittyE;
         }
       }
-//    }
-    
+    }
     
     // CONSTRAIN KITTY TO THE BOUNDS OF THE MAP
     // if too far up
@@ -247,7 +235,6 @@ class pacKitty
     {
       kittyX = kittyW;
     }
-    
     
     // ROTATE THE CAT ACCORDINGLY
     // cat looks left
