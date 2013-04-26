@@ -6,8 +6,7 @@ class pacKitty
   // cat movement
   float kittyX; // x
   float kittyY; // y
-  float kittyVX; // velocity in the x
-  float kittyVY; // velocity in the y
+  float kittyS; // velocity
   float kittyE; // kitty velocity when not on a hill
   boolean isCatHighRef;
   
@@ -35,6 +34,7 @@ class pacKitty
     // cat movement
     kittyX=width/2;
     kittyY=height/2;
+    kittyS=5;
     kittyE=0.05;
     
     // cat appearance
@@ -162,7 +162,7 @@ class pacKitty
   // MAKE OUR CAT MOVE!
   ////////////////////////////////////////////////////////
   void updateCat()
-  {  
+  {
     // what is the pixel number in the array?
     int loc = int( kittyX + kittyY * drawnMap.width );
     // target our finger
@@ -177,22 +177,22 @@ class pacKitty
     if(brightness(drawnMap.pixels[loc]) < darknessThreshold)
     {
       if(mousePressed == true)
-      {   
+      {
         if(distanceX > 0)
         {
-          kittyX = kittyX - 1;
+          kittyX = kittyX - kittyS;
         }
-        else if(distanceX < 0)
+        if(distanceX < 0)
         {
-          kittyX = kittyX + 1;
+          kittyX = kittyX + kittyS;
         }
         if(distanceY > 0)
         {
-          kittyY = kittyY - 1;
+          kittyY = kittyY - kittyS;
         }
-        else if(distanceY < 0)
+        if(distanceY < 0)
         {
-          kittyY = kittyY + 1;
+          kittyY = kittyY + kittyS;
         }
       }
     }
@@ -202,14 +202,22 @@ class pacKitty
     else
     {
       if(mousePressed == true)
-      {       
-        if(abs(distanceX) > 1)
+      {
+        if(distanceX > 0)
         {
-          kittyX += distanceX * kittyE;
+          kittyX = kittyX + kittyS;
         }
-        if(abs(distanceY) > 1)
+        if(distanceX < 0)
         {
-          kittyY += distanceY * kittyE;
+          kittyX = kittyX - kittyS;
+        }
+        if(distanceY > 0)
+        {
+          kittyY = kittyY + kittyS;
+        }
+        if(distanceY < 0)
+        {
+          kittyY = kittyY - kittyS;
         }
       }
     }
@@ -226,12 +234,12 @@ class pacKitty
       kittyY = kittyW;
     }
     // if too far left
-    if(kittyX-kittyW/2 < 0)
+    else if(kittyX-kittyW/2 < 0)
     {
       kittyX = width-kittyW;
     }
     // if too far right
-    if(kittyX+kittyW/2 > width)
+    else if(kittyX+kittyW/2 > width)
     {
       kittyX = kittyW;
     }
@@ -246,32 +254,11 @@ class pacKitty
         renderCat();
       popMatrix();
     }
-    
     // else cat looks right
-    else if(mouseX > kittyX)
+    else
     {
       pushMatrix();
         translate(kittyX,kittyY);
-        renderCat();
-      popMatrix();
-    }
-    
-    // else cat looks up
-    else if(mouseY < kittyY)
-    {
-      pushMatrix();
-        translate(kittyX,kittyY);
-        rotate(radians(-90));
-        renderCat();
-      popMatrix();
-    }
-    
-    // else cat looks down
-    else if(mouseY > kittyX)
-    {
-      pushMatrix();
-        translate(kittyX,kittyY);
-        rotate(radians(90));
         renderCat();
       popMatrix();
     }

@@ -132,10 +132,10 @@ class mapGenerator
         strokeWeight(40);
           line(pmouseX,pmouseY,mouseX,mouseY);
         stroke(50,50);
-        strokeWeight(20);
+        strokeWeight(30);
           line(pmouseX,pmouseY,mouseX,mouseY);
         stroke(0,255);
-        strokeWeight(10);
+        strokeWeight(20);
           line(pmouseX,pmouseY,mouseX,mouseY);
       popStyle();
     }

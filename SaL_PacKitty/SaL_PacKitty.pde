@@ -26,6 +26,7 @@
   PImage deathImage;
   PImage levelImage;
   PImage goalImage;
+  PImage scoreImage;
   PImage drawnMap;
   PImage game_start;
   PImage game_continue;
@@ -70,6 +71,7 @@ void setup()
   deathImage = loadImage("death-screen.png");
   levelImage = loadImage("levelup-screen.png");
   goalImage = loadImage("goals-screen.png");
+  scoreImage = loadImage("score-screen.png");
   drawnMap = loadImage("map.png");
   game_start = loadImage("game_start.png");
   game_continue = loadImage("game_continue.png");
@@ -193,6 +195,10 @@ void showIntro()
     playMusicOnce = false;
   }
   
+  // level goes back to 1
+  // not very clean, but the best place to put it to resolve score issue
+  levelNum = 1;
+  
   // show the start button
   pushStyle();
     imageMode(CORNER);
@@ -239,6 +245,22 @@ void showGoals()
   // intialize these classes once, and only once
   if( (millis()-startTime) > 2000 && (millis()-startTime) < 2500 )
   {
+    // transfer variables from one class to another
+    // to the red ghost
+    myRed.kittyRefX = myKitty.kittyX;
+    myRed.kittyRefY = myKitty.kittyY;
+    // to the blue ghost
+    myBlue.kittyRefX = myKitty.kittyX+100;
+    myBlue.kittyRefY = myKitty.kittyY+100;
+    // to the blue ghost
+    myGreen.kittyRefX = myKitty.kittyX-100;
+    myGreen.kittyRefY = myKitty.kittyY-100;
+    // to the food class
+    myFood.kittyRefX = myKitty.kittyX;
+    myFood.kittyRefY = myKitty.kittyY;
+    // to the kitty class
+    myKitty.isCatHighRef = myFood.isCatHigh;
+  
     myBlue.resetMap();
     myGreen.resetMap();
     myRed.resetMap();
@@ -448,10 +470,7 @@ void lose()
   float redDeath = dist(myKitty.kittyX, myKitty.kittyY, myRed.ghostX, myRed.ghostY);
   
   if (blueDeath < myKitty.kittyW && myFood.isCatHigh == false || greenDeath < myKitty.kittyW && myFood.isCatHigh == false || redDeath < myKitty.kittyW && myFood.isCatHigh == false)
-  {
-    // level goes back to 1
-    levelNum = 1;
-      
+  {     
     // make all goals go back to level 1
     goalKibbles = 10;
     goalFish = 1;
@@ -557,7 +576,7 @@ void showDeath()
 void showScore()
 {
   // show intro image!
-  background(goalImage);
+  background(scoreImage);
   
   // play the music
   if(playMusicOnce == true)
@@ -571,18 +590,18 @@ void showScore()
   pushStyle();
     imageMode(CORNER);
     image(game_restart,
-          width -  game_restart.width - 20,
-          height - game_restart.height - 70
+          width/2 - game_restart.width/2,
+          height/2 + game_restart.height + 70
           );
   popStyle();
   
   // if the user touches the screen, show our new goals
   if (
   mousePressed == true &&
-  mouseX > width - game_restart.width - 20 &&
-  mouseX < width &&
-  mouseY > height - game_restart.height - 70 &&
-  mouseY < height
+  mouseX > width/2 - game_restart.width/2 &&
+  mouseX < width/2 + game_restart.width/2 &&
+  mouseY > height/2 + game_restart.height + 70 &&
+  mouseY < height/2 + game_restart.height + 70 + game_restart.height
   )
   {
     // reset character values
