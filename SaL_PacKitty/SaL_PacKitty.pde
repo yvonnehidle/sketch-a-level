@@ -97,7 +97,6 @@ void setup()
   // audio related
   player = new PMediaPlayer(this);
   player.setLooping(false);
-  player.setVolume(1.0, 1.0);
   playMusicOnce = true;
   
   // check for problems!
@@ -237,7 +236,7 @@ void showGoals()
   int countDown = 5000;
   
   // intialize these classes once, and only once
-  if(levelNum == 1 && (millis()-startTime) > 2000 && (millis()-startTime) < 2500)
+  if( (millis()-startTime) > 2000 && (millis()-startTime) < 2500 )
   {
     myBlue.resetMap();
     myGreen.resetMap();
@@ -322,6 +321,8 @@ void playNow()
   
   // check for problems!
   //println("LOOPING: Game play");
+  println("Kibbles Eaten: " + myFood.kibbleEaten);
+  println("Kibbles Goal: " + goalKibbles);
 }
 ////////////////////////////////////////////////////////
 
@@ -373,6 +374,7 @@ void win()
     // make the ghosts faster!
     
     // reset the character values!
+    myFood.isCatHigh = false;
     
     // reset the food placement
     
@@ -440,18 +442,36 @@ void levelUp()
 ////////////////////////////////////////////////////////
 void lose()
 {
+  float blueDeath = dist(myKitty.kittyX, myKitty.kittyY, myBlue.ghostX, myBlue.ghostY);
+  float greenDeath = dist(myKitty.kittyX, myKitty.kittyY, myGreen.ghostX, myGreen.ghostY);
+  float redDeath = dist(myKitty.kittyX, myKitty.kittyY, myRed.ghostX, myRed.ghostY);
   
-float blueDeath = dist(myKitty.kittyX, myKitty.kittyY, myBlue.ghostX, myBlue.ghostY);
-float greenDeath = dist(myKitty.kittyX, myKitty.kittyY, myGreen.ghostX, myGreen.ghostY);
-float redDeath = dist(myKitty.kittyX, myKitty.kittyY, myRed.ghostX, myRed.ghostY);
-
-if (blueDeath < myKitty.kittyW && myFood.isCatHigh == false || greenDeath < myKitty.kittyW && myFood.isCatHigh == false || redDeath < myKitty.kittyW && myFood.isCatHigh == false)
-{
-  // pacKitty dies!
-  playMusicOnce = true;
-  gamePhase=6;
-}
-
+  if (blueDeath < myKitty.kittyW && myFood.isCatHigh == false || greenDeath < myKitty.kittyW && myFood.isCatHigh == false || redDeath < myKitty.kittyW && myFood.isCatHigh == false)
+  {
+    // level goes back to 1
+    levelNum = 1;
+      
+    // make all goals go back to level 1
+    goalKibbles = 10;
+    goalFish = 1;
+    goalGhosts = 0;
+      
+    // make the ghosts go back to level 1
+      
+    // reset the character values!
+    myFood.isCatHigh = false;
+      
+    // reset the food placement
+      
+    // reset the score
+    myFood.kibbleEaten = 0;
+    myFood.fishEaten = 0;
+    myFood.ghostsEaten = 0;
+  
+    // pacKitty dies!
+    playMusicOnce = true;
+    gamePhase=6;
+  }
 }
 ////////////////////////////////////////////////////////
 
@@ -464,6 +484,7 @@ void showDeath()
   // show intro image!
   background(deathImage);
   
+  // BUTTON IMAGES
   // show the continue button
   pushStyle();
     imageMode(CORNER);
@@ -477,6 +498,7 @@ void showDeath()
           );
   popStyle();
   
+  // MUSIC
   // play the music only once!
   if(playMusicOnce == true)
   {
@@ -485,6 +507,7 @@ void showDeath()
     playMusicOnce = false; 
   }
   
+  // THE SCORE BUTTON
   // if the user touches the score button, show the score
   if (
   mousePressed == true &&
@@ -495,10 +518,13 @@ void showDeath()
   )
   {
     println("SCORE!");
+    // get the music ready
+    playMusicOnce = true;
     // change our game phase to 7
     gamePhase = 7;
   }
   
+  // THE RESET BUTTON
   // if the user touches the restart button, go to the intro page
   if (
   mousePressed == true &&
@@ -532,6 +558,14 @@ void showScore()
   // show intro image!
   background(goalImage);
   
+  // play the music
+  if(playMusicOnce == true)
+  {
+    player.setMediaFile("score.mp3");
+    player.start();
+    playMusicOnce = false;
+  }
+  
   // show the continue button
   pushStyle();
     imageMode(CORNER);
@@ -550,6 +584,15 @@ void showScore()
   mouseY < height
   )
   {
+    // reset character values
+    myFood.isCatHigh = false;
+    
+    // reset total score values
+    myFood.total_kibbleEaten = 0;
+    myFood.total_fishEaten = 0;
+    myFood.total_ghostsEaten = 0;
+    myFood.total_catNipEaten = 0;
+    
     // proceed to intro map
     gamePhase = 0;
   }

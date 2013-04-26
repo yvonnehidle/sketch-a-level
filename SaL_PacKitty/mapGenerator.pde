@@ -390,6 +390,9 @@ class mapGenerator
     is_map_ready == true
     )
     {
+      // change map to previous
+      menu_save_this_map = loadImage("menu_save-this-map.png");
+      menu_start_game = loadImage("menu_blank.png");
       // switch phases
       gamePhase = 3;
       // start timer
