@@ -223,13 +223,16 @@ class pacKitty
 //    }
 
     // EASY CONTROL FOR TESTING PURPOSES
-    if(abs(distanceX) > 1)
+    if(mousePressed == true)
     {
-      kittyX += distanceX * kittyE;
-    }
-    if(abs(distanceY) > 1)
-    {
-      kittyY += distanceY * kittyE;
+      if(abs(distanceX) > 1)
+      {
+        kittyX += distanceX * kittyE;
+      }
+      if(abs(distanceY) > 1)
+      {
+        kittyY += distanceY * kittyE;
+      }
     }
     
     // CONSTRAIN KITTY TO THE BOUNDS OF THE MAP

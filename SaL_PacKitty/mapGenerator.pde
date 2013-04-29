@@ -25,10 +25,10 @@ class mapGenerator
   boolean is_walljump;
   
   // portals
-  final int portalsMax = 3;
+  final int portalsMax = 5;
   int[] portalX = new int[portalsMax];
   int[] portalY = new int[portalsMax];
-  PShape portal;
+  float portalSize;
     
   ////////////////////////////////////////////////////////
   // THE CONSTRUCTOR
@@ -51,8 +51,6 @@ class mapGenerator
       menu_deathtraps = loadImage("menu_deathtraps.png");
     // wall jumps
       menu_walljump = loadImage("menu_walljump.png");
-    // portals
-      portal = loadShape("portal.svg");
     
     // booleans for map making
     is_map_drawn = false;
@@ -72,6 +70,7 @@ class mapGenerator
       portalX[i] = -100;
       portalY[i] = -100;
     }
+    portalSize = 50;
     
     // check for problems!
     //println("LOAD ONCE: Map generator constructor");
@@ -352,10 +351,14 @@ class mapGenerator
     
     // KEEP OUR SYMBOLS ON SCREEN
     pushStyle();
-      shapeMode(CENTER);
-      shape(portal, portalX[0], portalY[0], 100, 100);
-      shape(portal, portalX[1], portalY[1], 100, 100);
-      shape(portal, portalX[2], portalY[2], 100, 100);
+      stroke(0,174,239);
+      fill(255);
+      strokeWeight(5);
+      ellipse(portalX[0], portalY[0], portalSize, portalSize);
+      ellipse(portalX[1], portalY[1], portalSize, portalSize);
+      ellipse(portalX[2], portalY[2], portalSize, portalSize);
+      ellipse(portalX[3], portalY[3], portalSize, portalSize);
+      ellipse(portalX[4], portalY[4], portalSize, portalSize);
     popStyle();
   }
   ////////////////////////////////////////////////////////
@@ -374,15 +377,7 @@ class mapGenerator
     mouseY > 0 && 
     mouseY < menu_start_game.height
     )
-    {            
-      // crop and save our drawing in the new directory
-      save("//sdcard/PacKitty/map.png");
-      println("Map Saved");
-      
-      // load the new drawing as our new maze
-      drawnMap = loadImage("//sdcard/PacKitty/map.png");
-      println("Map Loaded");
-      
+    {                 
       // change the menu to reflect the image has been saved
       menu_save_this_map = loadImage("menu_map-saved.png");
       menu_start_game = loadImage("menu_start-game.png");
@@ -518,7 +513,7 @@ class mapGenerator
     }
     
     // check for problems
-    println(portalX);
+    //println(portalX);
     //println(portalY);
   }
   ////////////////////////////////////////////////////////
@@ -539,6 +534,5 @@ class mapGenerator
   void drawWalljump()
   {
   }
-  ////////////////////////////////////////////////////////
-  
+  ////////////////////////////////////////////////////////  
 }

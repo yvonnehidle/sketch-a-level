@@ -13,7 +13,7 @@ class allFood
   int fishSize;
   int tastyFishX;
   int tastyFishY;
-  PShape tastyFish;
+  PImage tastyFish;
   
   // the ghosts
   float ghostsEaten;
@@ -22,11 +22,11 @@ class allFood
   // kibbles!
   float kibbleEaten;
   float total_kibbleEaten;
-  int foodSize;
   final int foodMax = 100;
+  int foodSize;
   int[] foodX;
   int[] foodY;
-  PShape foodBits;
+  PImage foodBits;
   
   // catnip!
   float total_catNipEaten;
@@ -52,7 +52,7 @@ class allFood
     fishSize = 40;
     tastyFishX = int( random(0, width) );
     tastyFishY = int( random(0, height) );
-    tastyFish = loadShape("fish.svg");
+    tastyFish = loadImage("fish.png");
     
     // the ghosts
     ghostsEaten = 0;
@@ -66,7 +66,7 @@ class allFood
     foodY = new int[foodMax];
     foodX = makeFoodX(foodMax);
     foodY = makeFoodY(foodMax);
-    foodBits = loadShape("food.svg");
+    foodBits = loadImage("food.png");
     
     // catnip!
     total_catNipEaten = 0;
@@ -132,7 +132,7 @@ class allFood
       // else spawn us some food!
       else
       {
-        shape(foodBits, foodX[i], foodY[i], foodSize, foodSize);
+        image(foodBits, foodX[i], foodY[i], foodSize, foodSize);
       }
       
       // EAT THE FOOD
@@ -178,7 +178,7 @@ class allFood
     // else spawn us some food!
     else
     {
-      shape(tastyFish,tastyFishX,tastyFishY,fishSize,fishSize);
+      image(tastyFish,tastyFishX,tastyFishY,fishSize,fishSize);
     }
       
     // EAT THE FOOD

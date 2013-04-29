@@ -170,7 +170,7 @@ void draw()
   }
   
   // check for problems!
-  //println(frameRate);
+  println(frameRate);
 }
 ////////////////////////////////////////////////////////
 
@@ -322,14 +322,17 @@ void playNow()
   myBlue.play();
   myGreen.play();
   
+  // spawn portals, death traps, wall jumps oh my!
+  specials();
+  
   // winning and losing
-  lose();
+  //lose();
   win();
   
   // check for problems!
   //println("LOOPING: Game play");
-  println("Kibbles Eaten: " + myFood.kibbleEaten);
-  println("Kibbles Goal: " + goalKibbles);
+  //println("Kibbles Eaten: " + myFood.kibbleEaten);
+  //println("Kibbles Goal: " + goalKibbles);
 }
 ////////////////////////////////////////////////////////
 
@@ -612,6 +615,61 @@ void showScore()
     text("Ghosts Eaten: " + nf(myFood.total_ghostsEaten,0,0), width/2, height/2-40);
     text("Cat Nip Eaten: " + nf(myFood.total_catNipEaten,0,0), width/2, height/2);
   popStyle();
+}
+////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////
+// SPECIAL FEATURES
+// this function gets called by main
+// we need it to show all our portals and what-not
+////////////////////////////////////////////////////////
+void specials()
+{
+  // ALL THINGS PORTALS! 
+  // draw them now
+  pushStyle();
+    stroke(0,174,239);
+    strokeWeight(5);
+    fill(255);
+    ellipse(myMap.portalX[0], myMap.portalY[0], myMap.portalSize, myMap.portalSize);
+    ellipse(myMap.portalX[1], myMap.portalY[1], myMap.portalSize, myMap.portalSize);
+    ellipse(myMap.portalX[2], myMap.portalY[2], myMap.portalSize, myMap.portalSize);
+    ellipse(myMap.portalX[3], myMap.portalY[3], myMap.portalSize, myMap.portalSize);
+    ellipse(myMap.portalX[4], myMap.portalY[4], myMap.portalSize, myMap.portalSize);
+  popStyle();
+  
+  // make them portal you!
+  float myPort0 = dist(myKitty.kittyX,myKitty.kittyY,myMap.portalX[0],myMap.portalY[0]);
+  float myPort1 = dist(myKitty.kittyX,myKitty.kittyY,myMap.portalX[1],myMap.portalY[1]);
+  float myPort2 = dist(myKitty.kittyX,myKitty.kittyY,myMap.portalX[2],myMap.portalY[2]);
+  float myPort3 = dist(myKitty.kittyX,myKitty.kittyY,myMap.portalX[3],myMap.portalY[3]);
+  float myPort4 = dist(myKitty.kittyX,myKitty.kittyY,myMap.portalX[4],myMap.portalY[4]);
+  
+  // for portal 0
+  if (myPort0 < myMap.portalSize)
+  { 
+    // randomly roll a number
+    int choosePortal = int( random(0,5) );
+    
+    // if the portals are the same, reroll
+    if(myMap.portalX[0] == myMap.portalX[choosePortal])
+    {
+      //println("Portal the same, try again");
+      choosePortal = int( random(0,5) );
+    }
+    
+    // re draw portal
+    pushStyle();
+      stroke(0,174,239);
+      strokeWeight(5);
+      fill(255,0,0);
+      ellipse(myMap.portalX[0], myMap.portalY[0], myMap.portalSize, myMap.portalSize);
+    popStyle();
+    
+    myKitty.kittyX = myMap.portalX[choosePortal];
+    myKitty.kittyY = myMap.portalY[choosePortal];
+    //println("PORT ME!");
+  }  
 }
 ////////////////////////////////////////////////////////
 
