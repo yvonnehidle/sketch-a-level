@@ -35,7 +35,7 @@ class allFood
   float catNipS;
   boolean isCatHigh;
   int startHigh;
-  PShape catNip;
+  PImage catNip;
   
   // map related
   int darknessThreshold;
@@ -75,7 +75,7 @@ class allFood
     catNipS = 25;
     isCatHigh = false;
     startHigh = 0;
-    catNip = loadShape("catnip.svg");
+    catNip = loadImage("catnip.png");
     
     // map related
     darknessThreshold = 150;
@@ -225,7 +225,7 @@ class allFood
     // else spawn us some food!
     else
     {
-      shape(catNip,catNipX,catNipY,catNipS,catNipS);
+      image(catNip,catNipX,catNipY,catNipS,catNipS);
     }
       
     // EAT THE FOOD
