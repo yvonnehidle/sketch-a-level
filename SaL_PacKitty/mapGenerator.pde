@@ -29,6 +29,14 @@ class mapGenerator
   int[] portalX = new int[portalsMax];
   int[] portalY = new int[portalsMax];
   float portalSize;
+  
+  // death traps
+  final int trapsMax = 5;
+  int[] trapX = new int[trapsMax];
+  int[] trapY = new int[trapsMax];
+  float trapSize;
+  
+  // wall jumps
     
   ////////////////////////////////////////////////////////
   // THE CONSTRUCTOR
@@ -64,13 +72,21 @@ class mapGenerator
     is_deathtraps = false;
     is_walljump = false;
     
-    // portal locations
+    // portals
     for(int i=0; i<portalX.length; i++)
     {
       portalX[i] = -100;
       portalY[i] = -100;
     }
     portalSize = 50;
+    
+    // deathtraps
+    for(int i=0; i<trapX.length; i++)
+    {
+      trapX[i] = -100;
+      trapX[i] = -100;
+    }
+    trapSize = 50;
     
     // check for problems!
     //println("LOAD ONCE: Map generator constructor");
@@ -350,16 +366,25 @@ class mapGenerator
     }
     
     // KEEP OUR SYMBOLS ON SCREEN
-    pushStyle();
-      stroke(0,174,239);
-      fill(255);
-      strokeWeight(5);
-      ellipse(portalX[0], portalY[0], portalSize, portalSize);
-      ellipse(portalX[1], portalY[1], portalSize, portalSize);
-      ellipse(portalX[2], portalY[2], portalSize, portalSize);
-      ellipse(portalX[3], portalY[3], portalSize, portalSize);
-      ellipse(portalX[4], portalY[4], portalSize, portalSize);
-    popStyle();
+    for(int i=0; i<portalsMax; i++)
+    {
+      pushStyle();      
+        // portals
+        stroke(0,174,239);
+        fill(255);
+        strokeWeight(5);
+        ellipse(portalX[i], portalY[i], portalSize, portalSize);
+        
+        // death traps
+        rectMode(CENTER);
+        noStroke();
+        fill(255,0,0);
+        rect(trapX[i], trapY[i], trapSize, trapSize);
+      popStyle();
+    }
+    
+    // CHECK FOR PROBLEMS
+    println(trapX);
   }
   ////////////////////////////////////////////////////////
   
@@ -524,6 +549,20 @@ class mapGenerator
   ////////////////////////////////////////////////////////
   void drawDeathtraps()
   {
+    if(mouseY > 100 && mousePressed == true)
+    {
+      
+      // shift array location
+      for(int i=0; i<trapX.length-1; i++)
+      {
+        trapX[i] = trapX[i+1];
+        trapY[i] = trapY[i+1];
+      }
+      
+      // new location is the x and the y
+      trapX[trapX.length-1] = mouseX;
+      trapY[trapY.length-1] = mouseY;      
+    }
   }
   ////////////////////////////////////////////////////////
   

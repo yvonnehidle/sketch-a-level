@@ -626,50 +626,48 @@ void showScore()
 void specials()
 {
   // ALL THINGS PORTALS! 
-  // draw them now
-  pushStyle();
-    stroke(0,174,239);
-    strokeWeight(5);
-    fill(255);
-    ellipse(myMap.portalX[0], myMap.portalY[0], myMap.portalSize, myMap.portalSize);
-    ellipse(myMap.portalX[1], myMap.portalY[1], myMap.portalSize, myMap.portalSize);
-    ellipse(myMap.portalX[2], myMap.portalY[2], myMap.portalSize, myMap.portalSize);
-    ellipse(myMap.portalX[3], myMap.portalY[3], myMap.portalSize, myMap.portalSize);
-    ellipse(myMap.portalX[4], myMap.portalY[4], myMap.portalSize, myMap.portalSize);
-  popStyle();
+  int[] myPort = new int[myMap.portalsMax];
   
   // make them portal you!
-  float myPort0 = dist(myKitty.kittyX,myKitty.kittyY,myMap.portalX[0],myMap.portalY[0]);
-  float myPort1 = dist(myKitty.kittyX,myKitty.kittyY,myMap.portalX[1],myMap.portalY[1]);
-  float myPort2 = dist(myKitty.kittyX,myKitty.kittyY,myMap.portalX[2],myMap.portalY[2]);
-  float myPort3 = dist(myKitty.kittyX,myKitty.kittyY,myMap.portalX[3],myMap.portalY[3]);
-  float myPort4 = dist(myKitty.kittyX,myKitty.kittyY,myMap.portalX[4],myMap.portalY[4]);
-  
-  // for portal 0
-  if (myPort0 < myMap.portalSize)
-  { 
-    // randomly roll a number
-    int choosePortal = int( random(0,5) );
-    
-    // if the portals are the same, reroll
-    if(myMap.portalX[0] == myMap.portalX[choosePortal])
-    {
-      //println("Portal the same, try again");
-      choosePortal = int( random(0,5) );
-    }
-    
-    // re draw portal
+  for(int i=0; i<myMap.portalsMax; i++)
+  {
+    // draw them now
     pushStyle();
       stroke(0,174,239);
       strokeWeight(5);
-      fill(255,0,0);
-      ellipse(myMap.portalX[0], myMap.portalY[0], myMap.portalSize, myMap.portalSize);
+      fill(255);
+      ellipse(myMap.portalX[i], myMap.portalY[i], myMap.portalSize, myMap.portalSize);
     popStyle();
+  
+    // intialize distances from portal to kitty
+    myPort[i] = int( dist(myKitty.kittyX,myKitty.kittyY,myMap.portalX[i],myMap.portalY[i]) );
     
-    myKitty.kittyX = myMap.portalX[choosePortal];
-    myKitty.kittyY = myMap.portalY[choosePortal];
-    //println("PORT ME!");
-  }  
+    // if kitty overlaps our portal, port him properly
+    if (myPort[i] < myMap.portalSize)
+    { 
+      // randomly roll a number
+      int choosePortal = int( random(0,5) );
+      
+      // if the portals are the same, reroll
+      if(myMap.portalX[i] == myMap.portalX[choosePortal])
+      {
+        //println("Portal the same, try again");
+        choosePortal = int( random(0,5) );
+      }
+      
+      // re draw portal
+      pushStyle();
+        stroke(0,174,239);
+        strokeWeight(5);
+        fill(255,0,0);
+        ellipse(myMap.portalX[i], myMap.portalY[i], myMap.portalSize, myMap.portalSize);
+      popStyle();
+      
+      myKitty.kittyX = myMap.portalX[choosePortal] +100;
+      myKitty.kittyY = myMap.portalY[choosePortal];
+      //println("PORT ME!");
+    }
+  }
 }
 ////////////////////////////////////////////////////////
 
