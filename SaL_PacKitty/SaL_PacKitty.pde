@@ -646,13 +646,13 @@ void specials()
     if (myPort[i] < myMap.portalSize)
     { 
       // randomly roll a number
-      int choosePortal = int( random(0,5) );
+      int choosePortal = int( random(0,2) );
       
       // if the portals are the same, reroll
       if(myMap.portalX[i] == myMap.portalX[choosePortal])
       {
         //println("Portal the same, try again");
-        choosePortal = int( random(0,5) );
+        choosePortal = int( random(0,2) );
       }
       
       // re draw portal
@@ -666,6 +666,29 @@ void specials()
       myKitty.kittyX = myMap.portalX[choosePortal] +100;
       myKitty.kittyY = myMap.portalY[choosePortal];
       //println("PORT ME!");
+    }
+  }
+  
+  // ALL THINGS DEATH TRAPS
+  int[] myTrap = new int[myMap.trapsMax];
+  
+  for(int i=0; i<myMap.trapsMax; i++)
+  {
+    // draw them now
+    pushStyle();
+      rectMode(CENTER);
+      noStroke();
+      fill(255,0,0);
+      rect(myMap.trapX[i], myMap.trapY[i], myMap.trapSize, myMap.trapSize);
+    popStyle();
+    
+    // intialize distances from deathtrap to kitty
+    myTrap[i] = int( dist(myKitty.kittyX, myKitty.kittyY, myMap.trapX[i], myMap.trapY[i]) );
+    
+    // if kitty overlaps trap, then die
+    if (myTrap[i] < myMap.trapSize)
+    {
+      gamePhase=6;
     }
   }
 }

@@ -174,13 +174,25 @@ class greenGhost
     ghostY = ghostY + ghostVY;
     
     // CONSTRAIN GHOSTS TO MAP
-    if(ghostY < 0 || ghostY > height)
+    // if too far up
+    if(ghostY-mySkin.ghostW/2 < 100)
     {
-      ghostY = 0;
+      ghostY = height-mySkin.ghostW;
     }
-    if(ghostX < 0 || ghostX > width)
+    // if too far down
+    else if(ghostY+mySkin.ghostW/2 > height)
     {
-      ghostX = 0;
+      ghostY = 100+mySkin.ghostW/2;
+    }
+    // if too far left
+    else if(ghostX-mySkin.ghostW/2 < 0)
+    {
+      ghostX = width-mySkin.ghostW;
+    }
+    // if too far right
+    else if(ghostX+mySkin.ghostW/2 > width)
+    {
+      ghostX = mySkin.ghostW;
     }
   }
   ////////////////////////////////////////////////////////

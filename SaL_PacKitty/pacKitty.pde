@@ -237,14 +237,14 @@ class pacKitty
     
     // CONSTRAIN KITTY TO THE BOUNDS OF THE MAP
     // if too far up
-    if(kittyY-kittyW/2 < 0)
+    if(kittyY-kittyW/2 < 100)
     {
       kittyY = height-kittyW;
     }
     // if too far down
     else if(kittyY+kittyW/2 > height)
     {
-      kittyY = kittyW;
+      kittyY = 100+kittyW/2;
     }
     // if too far left
     else if(kittyX-kittyW/2 < 0)

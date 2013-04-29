@@ -3,7 +3,7 @@
 // this is a drawing program where you draw your map
 ////////////////////////////////////////////////////////
 class mapGenerator
-{
+{   
   // menu images
   PImage menu_save_this_map;
   PImage menu_start_game;
@@ -25,13 +25,13 @@ class mapGenerator
   boolean is_walljump;
   
   // portals
-  final int portalsMax = 5;
+  final int portalsMax = 3;
   int[] portalX = new int[portalsMax];
   int[] portalY = new int[portalsMax];
   float portalSize;
   
   // death traps
-  final int trapsMax = 5;
+  final int trapsMax = 3;
   int[] trapX = new int[trapsMax];
   int[] trapY = new int[trapsMax];
   float trapSize;
@@ -42,23 +42,16 @@ class mapGenerator
   // THE CONSTRUCTOR
   ////////////////////////////////////////////////////////
   mapGenerator()
-  {
-    // map buttons
-      menu_save_this_map = loadImage("menu_save-this-map.png");   
-    // start button
-      menu_start_game = loadImage("menu_blank.png");
-    // walls
-      menu_walls = loadImage("menu_walls-selected.png");
-    // eraser
-      menu_eraser = loadImage("menu_eraser.png");
-    // clearall
-      menu_clearall = loadImage("menu_clearall.png");
-    // portals
-      menu_portals = loadImage("menu_portals-selected.png");
-    // deathtraps
-      menu_deathtraps = loadImage("menu_deathtraps.png");
-    // wall jumps
-      menu_walljump = loadImage("menu_walljump.png");
+  {      
+    // menu images
+    menu_save_this_map = loadImage("menu_save-this-map.png");        // save map button
+    menu_start_game = loadImage("menu_blank.png");                   // start menu button
+    menu_walls = loadImage("menu_walls-selected.png");               // walls button
+    menu_eraser = loadImage("menu_eraser.png");                      // eraser button
+    menu_clearall = loadImage("menu_clearall.png");                  // clear all button
+    menu_portals = loadImage("menu_portals-selected.png");           // portals button
+    menu_deathtraps = loadImage("menu_deathtraps.png");              // traps button
+    menu_walljump = loadImage("menu_walljump.png");                  // wall jump button
     
     // booleans for map making
     is_map_drawn = false;
@@ -73,19 +66,21 @@ class mapGenerator
     is_walljump = false;
     
     // portals
-    for(int i=0; i<portalX.length; i++)
-    {
-      portalX[i] = -100;
-      portalY[i] = -100;
-    }
+    portalX[0] = width-400;
+    portalY[0] = 100;
+    portalX[1] = width-500;
+    portalY[1] = 100;
+    portalX[2] = width-600;
+    portalY[2] = 100;
     portalSize = 50;
     
     // deathtraps
-    for(int i=0; i<trapX.length; i++)
-    {
-      trapX[i] = -100;
-      trapX[i] = -100;
-    }
+    trapX[0] = width-100;
+    trapY[0] = 100;
+    trapX[1] = width-200;
+    trapY[1] = 100;
+    trapX[2] = width-300;
+    trapY[2] = 100;
     trapSize = 50;
     
     // check for problems!
@@ -134,27 +129,9 @@ class mapGenerator
     if(mouseY > 100) 
     { 
       pushStyle();
-        stroke(50,1);
-        strokeWeight(130);
-          line(pmouseX,pmouseY,mouseX,mouseY);
-        stroke(50,3);
-        strokeWeight(100);
-          line(pmouseX,pmouseY,mouseX,mouseY);
-        stroke(50,5);
-        strokeWeight(80);
-          line(pmouseX,pmouseY,mouseX,mouseY);
-        stroke(50,5);
-        strokeWeight(60);
-          line(pmouseX,pmouseY,mouseX,mouseY);
-        stroke(50,5);
-        strokeWeight(40);
-          line(pmouseX,pmouseY,mouseX,mouseY);
-        stroke(50,50);
-        strokeWeight(30);
-          line(pmouseX,pmouseY,mouseX,mouseY);
         stroke(0,255);
         strokeWeight(20);
-          line(pmouseX,pmouseY,mouseX,mouseY);
+        line(pmouseX,pmouseY,mouseX,mouseY);
       popStyle();
     }
   }
@@ -168,10 +145,10 @@ class mapGenerator
   {
     if(mouseY > 100) 
     { 
-    pushStyle();
+      pushStyle();
         stroke(255,255);
         strokeWeight(50);
-          line(pmouseX,pmouseY,mouseX,mouseY);
+        line(pmouseX,pmouseY,mouseX,mouseY);
       popStyle();
     }
   }
@@ -198,11 +175,11 @@ class mapGenerator
       println("Directory Made");
       
       // crop and save our drawing in the new directory
-      save("//sdcard/PacKitty/map.png");
+      save("//sdcard/PacKitty/map.jpg");
       println("Map Saved");
       
       // load the new drawing as our new maze
-      drawnMap = loadImage("//sdcard/PacKitty/map.png");
+      drawnMap = loadImage("//sdcard/PacKitty/map.jpg");
       println("Map Loaded");
       
       // change the menu to reflect the image has been saved
@@ -366,7 +343,7 @@ class mapGenerator
     }
     
     // KEEP OUR SYMBOLS ON SCREEN
-    for(int i=0; i<portalsMax; i++)
+    for(int i=0; i<trapsMax; i++)
     {
       pushStyle();      
         // portals
@@ -522,19 +499,32 @@ class mapGenerator
   ////////////////////////////////////////////////////////
   void drawPortals()
   {
-    if(mouseY > 100 && mousePressed == true)
+//    if(mouseY > 100 && mousePressed == true)
+//    {
+//      
+//      // shift array location
+//      for(int i=0; i<portalX.length-1; i++)
+//      {
+//        portalX[i] = portalX[i+1];
+//        portalY[i] = portalY[i+1];
+//      }
+//      
+//      // new location is the x and the y
+//      portalX[portalX.length-1] = mouseX;
+//      portalY[portalY.length-1] = mouseY;      
+//    }
+
+    // move trap, drag and drop?
+    int[] movePortal = new int[portalsMax];
+    for(int i=0; i<portalsMax; i++)
     {
-      
-      // shift array location
-      for(int i=0; i<portalX.length-1; i++)
-      {
-        portalX[i] = portalX[i+1];
-        portalY[i] = portalY[i+1];
-      }
-      
-      // new location is the x and the y
-      portalX[portalX.length-1] = mouseX;
-      portalY[portalY.length-1] = mouseY;      
+      movePortal[i] = int( dist(mouseX, mouseY, portalX[i], portalY[i]) );
+     
+     if (movePortal[i] < portalSize && mousePressed == true)
+     {
+       portalX[i] = mouseX;
+       portalY[i] = mouseY;
+     }
     }
     
     // check for problems
@@ -549,19 +539,33 @@ class mapGenerator
   ////////////////////////////////////////////////////////
   void drawDeathtraps()
   {
-    if(mouseY > 100 && mousePressed == true)
+//    if(mouseY > 100 && mousePressed == true)
+//    {
+//      
+//      // shift array location
+//      for(int i=0; i<trapX.length-1; i++)
+//      {
+//        trapX[i] = trapX[i+1];
+//        trapY[i] = trapY[i+1];
+//      }
+//      
+//      // new location is the x and the y
+//      trapX[trapX.length-1] = mouseX;
+//      trapY[trapY.length-1] = mouseY;      
+//    }
+    
+    
+    // move trap, drag and drop?
+    int[] moveTrap = new int[trapsMax];
+    for(int i=0; i<trapsMax; i++)
     {
-      
-      // shift array location
-      for(int i=0; i<trapX.length-1; i++)
-      {
-        trapX[i] = trapX[i+1];
-        trapY[i] = trapY[i+1];
-      }
-      
-      // new location is the x and the y
-      trapX[trapX.length-1] = mouseX;
-      trapY[trapY.length-1] = mouseY;      
+      moveTrap[i] = int( dist(mouseX, mouseY, trapX[i], trapY[i]) );
+     
+     if (moveTrap[i] < trapSize && mousePressed == true)
+     {
+       trapX[i] = mouseX;
+       trapY[i] = mouseY;
+     }
     }
   }
   ////////////////////////////////////////////////////////
