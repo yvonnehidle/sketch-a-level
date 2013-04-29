@@ -245,22 +245,6 @@ void showGoals()
   // intialize these classes once, and only once
   if( (millis()-startTime) > 2000 && (millis()-startTime) < 2500 )
   {
-    // transfer variables from one class to another
-    // to the red ghost
-    myRed.kittyRefX = myKitty.kittyX;
-    myRed.kittyRefY = myKitty.kittyY;
-    // to the blue ghost
-    myBlue.kittyRefX = myKitty.kittyX+100;
-    myBlue.kittyRefY = myKitty.kittyY+100;
-    // to the blue ghost
-    myGreen.kittyRefX = myKitty.kittyX-100;
-    myGreen.kittyRefY = myKitty.kittyY-100;
-    // to the food class
-    myFood.kittyRefX = myKitty.kittyX;
-    myFood.kittyRefY = myKitty.kittyY;
-    // to the kitty class
-    myKitty.isCatHighRef = myFood.isCatHigh;
-  
     myBlue.resetMap();
     myGreen.resetMap();
     myRed.resetMap();

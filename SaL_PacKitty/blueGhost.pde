@@ -54,6 +54,7 @@ class blueGhost
     mapPixels = drawnMap.pixels; // get those pixels!
     pixelValues = new float[9]; // we want a neighborhood of 9 pixels
     
+    // respawn ghost so it is not next to the cat
     float distance = dist(kittyRefX,kittyRefY,ghostX,ghostY);
     if( abs(distance) < 200 )
     {

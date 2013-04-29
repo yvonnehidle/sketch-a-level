@@ -24,10 +24,11 @@ class mapGenerator
   boolean is_deathtraps;
   boolean is_walljump;
   
-  // portal locations
+  // portals
   final int portalsMax = 3;
   int[] portalX = new int[portalsMax];
   int[] portalY = new int[portalsMax];
+  PShape portal;
     
   ////////////////////////////////////////////////////////
   // THE CONSTRUCTOR
@@ -50,6 +51,8 @@ class mapGenerator
       menu_deathtraps = loadImage("menu_deathtraps.png");
     // wall jumps
       menu_walljump = loadImage("menu_walljump.png");
+    // portals
+      portal = loadShape("portal.svg");
     
     // booleans for map making
     is_map_drawn = false;
@@ -66,8 +69,8 @@ class mapGenerator
     // portal locations
     for(int i=0; i<portalX.length; i++)
     {
-      portalX[i] = 0;
-      portalY[i] = 0;
+      portalX[i] = -100;
+      portalY[i] = -100;
     }
     
     // check for problems!
@@ -213,7 +216,9 @@ class mapGenerator
       menu_save_this_map = loadImage("menu_save-this-map.png");
       
       // switch phases
-      gamePhase = 2;      
+      gamePhase = 2;
+      // make sure portals are ready to be used
+      is_portals = true; 
     }
     
     
@@ -344,6 +349,14 @@ class mapGenerator
     {
       drawWalljump();
     }
+    
+    // KEEP OUR SYMBOLS ON SCREEN
+    pushStyle();
+      shapeMode(CENTER);
+      shape(portal, portalX[0], portalY[0], 100, 100);
+      shape(portal, portalX[1], portalY[1], 100, 100);
+      shape(portal, portalX[2], portalY[2], 100, 100);
+    popStyle();
   }
   ////////////////////////////////////////////////////////
   
@@ -489,8 +502,9 @@ class mapGenerator
   ////////////////////////////////////////////////////////
   void drawPortals()
   {
-    if(mouseY > 100)
+    if(mouseY > 100 && mousePressed == true)
     {
+      
       // shift array location
       for(int i=0; i<portalX.length-1; i++)
       {
@@ -500,14 +514,7 @@ class mapGenerator
       
       // new location is the x and the y
       portalX[portalX.length-1] = mouseX;
-      portalY[portalY.length-1] = mouseY;
-      
-      for(int i=0; i<portalX.length; i++)
-      {
-        noStroke();
-        fill(255,0,0);
-        ellipse(portalX[i], portalY[i], 20, 20);
-      }
+      portalY[portalY.length-1] = mouseY;      
     }
     
     // check for problems
