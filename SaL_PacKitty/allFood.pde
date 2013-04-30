@@ -215,7 +215,7 @@ class allFood
     // ON WALL
     // if the brightness of the pixel is less than our darkness threshold
     // then do not spawn any food!
-    if(brightness(drawnMap.pixels[loc]) < darknessThreshold || tastyFishY < 50)
+    if(brightness(drawnMap.pixels[loc]) < darknessThreshold || catNipY < 50)
     {
       catNipX = int( random(0, width) );
       catNipY = int( random(0, height) );

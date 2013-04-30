@@ -6,6 +6,8 @@ class greenGhost
   // ghost movement
   float ghostX; // the x position of the ghost
   float ghostY; // the y position of the ghost
+  float ghostXstart; // the starting x position
+  float ghostYstart; // the starting y position
   float p_ghostX; // previous x position of the ghost
   float p_ghostY; // previous y position of the ghost
   float ghostVX; // ghost velocity in the X
@@ -32,8 +34,10 @@ class greenGhost
   greenGhost()
   {
     // ghost movement
-    ghostX = int( random(100, width-100) );
-    ghostY = int( random(100, height-100) );
+    ghostXstart = 75;
+    ghostYstart = height-100;
+    ghostX = ghostXstart;
+    ghostY = ghostYstart;
     ghostS = 5;
     
     // ghost appearance
@@ -54,14 +58,6 @@ class greenGhost
     drawnMap.loadPixels(); // load the pixels of our map, just once!
     mapPixels = drawnMap.pixels; // get those pixels!
     pixelValues = new float[9]; // we want a neighborhood of 9 pixels
-    
-    float distance = dist(kittyRefX,kittyRefY,ghostX,ghostY);
-    if( abs(distance) < 200 )
-    {
-      ghostX = int( random(100, width-100) );
-      ghostY = int( random(100, height-100) );
-      println("NEW VALUE: Green ghost");
-    }
     
     // check for problems!
     println("LOAD ONCE: Green ghost map calibrated");
@@ -172,28 +168,6 @@ class greenGhost
     // integration
     ghostX = ghostX + ghostVX;
     ghostY = ghostY + ghostVY;
-    
-    // CONSTRAIN GHOSTS TO MAP
-    // if too far up
-    if(ghostY-mySkin.ghostW/2 < 100)
-    {
-      ghostY = height-mySkin.ghostW;
-    }
-    // if too far down
-    else if(ghostY+mySkin.ghostW/2 > height)
-    {
-      ghostY = 100+mySkin.ghostW/2;
-    }
-    // if too far left
-    else if(ghostX-mySkin.ghostW/2 < 0)
-    {
-      ghostX = width-mySkin.ghostW;
-    }
-    // if too far right
-    else if(ghostX+mySkin.ghostW/2 > width)
-    {
-      ghostX = mySkin.ghostW;
-    }
   }
   ////////////////////////////////////////////////////////
   

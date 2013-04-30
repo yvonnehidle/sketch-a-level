@@ -22,16 +22,19 @@
   import apwidgets.*;
 
   // images
-  PImage screen_intro;
-  PImage screen_death;
-  PImage screen_levelup;
-  PImage screen_goals;
-  PImage screen_score;
+  PImage screen;
   PImage drawnMap;
   PImage navigation_start;
   PImage navigation_continue;
   PImage navigation_score;
   PImage navigation_restart;
+  
+  // screen booleans
+  boolean is_intro;
+  boolean is_goals;
+  boolean is_levelup;
+  boolean is_death;
+  boolean is_score;
   
   // general game variables
   int gamePhase;
@@ -67,16 +70,19 @@ void setup()
   //smooth();
   
   // images
-  screen_intro = loadImage("screen_intro.png");
-  screen_death = loadImage("screen_death.png");
-  screen_levelup = loadImage("screen_levelup.png");
-  screen_goals = loadImage("screen_goals.png");
-  screen_score = loadImage("screen_score.png");
-  drawnMap = loadImage("map.png");
+  screen = loadImage("screen_intro.png");
+  drawnMap = loadImage("blankmap.png");
   navigation_start = loadImage("navigation_start.png");
   navigation_continue = loadImage("navigation_continue.png");
   navigation_score = loadImage("navigation_score.png");
   navigation_restart = loadImage("navigation_restart.png");
+  
+  // screen booleans
+  is_intro = true;
+  is_goals = false;
+  is_levelup = false;
+  is_death = false;
+  is_score = false;
   
   // general game variables
   gamePhase=0;
@@ -115,7 +121,20 @@ void draw()
   // this is the screen you see when you run the application
   if(gamePhase == 0)
   {
+    // make true
+    is_intro = true;
+    
+    // load the introduction image
+    if(is_intro == true)
+    {
+      screen = loadImage("screen_intro.png");
+    }
+    
+    // show the introduction
     showIntro();
+    
+    // return to false
+    is_intro = false;
   }
   
   // MAP GENERATION SCREEN
@@ -138,13 +157,26 @@ void draw()
   // this is the screen that shows your current level and goals
   else if(gamePhase == 3)
   {
+    // make true
+    is_goals = true;
+    
+    // load the goals screen
+    if(is_goals == true)
+    {
+      screen = loadImage("screen_goals.png");
+    }
+    
+    // show the goals page
     showGoals();
+    
+    // make false
+    is_goals = false;
   }
   
   // PLAY THE GAME
   // this is the actual game that you play
   else if(gamePhase == 4)
-  {
+  {   
     playNow();
   }
   
@@ -152,21 +184,60 @@ void draw()
   // the screen you see if you win the current level
   else if(gamePhase == 5)
   {
+    // make true
+    is_levelup = true;
+    
+    // load the introduction image
+    if(is_levelup == true)
+    {
+      screen = loadImage("screen_levelup.png");
+    }
+    
+    // show the levelup screen
     levelUp();
+    
+    // make false
+    is_levelup = false;
   }
   
   // DEATH
   // this is the screen you see after death
   else if(gamePhase == 6)
   {
+    // make true
+    is_death = true;
+    
+    // load the introduction image
+    if(is_death == true)
+    {
+      screen = loadImage("screen_death.png");
+    }
+    
+    // show death screen
     showDeath();
+    
+    // make false
+    is_death = false;
   }
   
   // SCORE
   // if you want to see your score, go here
   else if(gamePhase == 7)
   {
+    // make true
+    is_score = true;
+    
+    // load the score image
+    if(is_score == true)
+    {
+      screen = loadImage("screen_score.png");
+    }
+    
+    // show the score screen
     showScore();
+    
+    // make false
+    is_score = false;
   }
   
   // check for problems!
@@ -185,7 +256,7 @@ void draw()
 void showIntro()
 {
   // show intro image!
-  background(screen_intro);
+  background(screen);
   
   // play the music only once!
   if(playMusicOnce == true)
@@ -239,6 +310,9 @@ void showIntro()
 ////////////////////////////////////////////////////////
 void showGoals()
 {
+  // show goal image
+  background(screen);
+  
   // countdown, 5 seconds until game starts
   int countDown = 5000;
   
@@ -251,9 +325,6 @@ void showGoals()
     myKitty.resetMap();
     myFood.resetMap();
   }
-  
-  // show goal image
-  background(screen_goals);
   
   // display level goals and timer
   pushStyle();
@@ -324,10 +395,13 @@ void playNow()
   
   // spawn portals, death traps, wall jumps oh my!
   specials();
+  eatGhosts();
   
   // winning and losing
-  //lose();
+  lose();
   win();
+  
+  noLoop();
   
   // check for problems!
   //println("LOOPING: Game play");
@@ -408,7 +482,7 @@ void win()
 void levelUp()
 {
   // show intro image!
-  background(screen_levelup);
+  background(screen);
   
   // show the continue button
   pushStyle();
@@ -489,7 +563,7 @@ void lose()
 void showDeath()
 {
   // show intro image!
-  background(screen_death);
+  background(screen);
   
   // BUTTON IMAGES
   // show the continue button
@@ -563,7 +637,7 @@ void showDeath()
 void showScore()
 {
   // show intro image!
-  background(screen_score);
+  background(screen);
   
   // play the music
   if(playMusicOnce == true)
@@ -660,6 +734,7 @@ void specials()
     }
   }
   
+  
   // ALL THINGS DEATH TRAPS
   int[] myTrap = new int[myMap.trapsMax];
   
@@ -679,6 +754,63 @@ void specials()
     {
       gamePhase=6;
     }
+  }
+  
+  
+  // ALL THINGS FOR WALL JUMPS
+  int[] myJump = new int[myMap.jumpsMax];
+  
+  for(int i=0; i<myMap.jumpsMax; i++)
+  {
+    // draw them now, only if not on menu
+    if(myMap.jumpY[i] > 50)
+    {
+      image(myMap.character_jump,myMap.jumpX[i],myMap.jumpY[i],myMap.jumpSize,myMap.jumpSize);
+    }
+    
+    // intialize distances from jump to kitty
+    myJump[i] = int( dist(myKitty.kittyX, myKitty.kittyY, myMap.jumpX[i], myMap.jumpY[i]) );
+    
+    // if kitty overlaps jump, then....
+    if (myJump[i] < myMap.jumpSize)
+    {
+    }
+  }
+}
+////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////
+// EAT GHOSTS!!!
+////////////////////////////////////////////////////////
+void eatGhosts()
+{
+  // set distances from different ghosts
+  float yum_myBlue = dist(myKitty.kittyX, myKitty.kittyY, myBlue.ghostX, myBlue.ghostY);
+  float yum_myGreen = dist(myKitty.kittyX, myKitty.kittyY, myGreen.ghostX, myGreen.ghostY);
+  float yum_myRed = dist(myKitty.kittyX, myKitty.kittyY, myRed.ghostX, myRed.ghostY);
+  
+  // eat the blue ghost
+  if(yum_myBlue < myKitty.kittyW && myFood.isCatHigh == true)
+  {
+    myBlue.ghostX = 0;
+    myBlue.ghostY = 0;
+    myFood.ghostsEaten++;
+  }
+  
+  // eat the green ghost
+  if (yum_myGreen < myKitty.kittyW && myFood.isCatHigh == true)
+  {
+    myGreen.ghostX = 0;
+    myGreen.ghostY = 0;
+    myFood.ghostsEaten++;
+  }
+  
+  // eat the red ghost
+  if (yum_myRed < myKitty.kittyW && myFood.isCatHigh == true)
+  {
+    myRed.ghostX = 0;
+    myRed.ghostY = 0;
+    myFood.ghostsEaten++;
   }
 }
 ////////////////////////////////////////////////////////

@@ -15,9 +15,14 @@ class mapGenerator
   PImage menu_eraser;
   PImage menu_clearall;
   
+  // map images
+  PImage platform_blue;
+  PImage platform_green;
+  PImage platform_red;
+  PImage platform_cat;
+  
   // booleans for menu
   boolean is_map_drawn;
-  boolean is_map_ready;
   boolean is_walls;
   boolean is_eraser;
   boolean is_clearall;
@@ -37,6 +42,11 @@ class mapGenerator
   PImage character_deathtrap;
   
   // wall jumps
+  final int jumpsMax = 3;
+  int[] jumpX = new int[jumpsMax];
+  int[] jumpY = new int[jumpsMax];
+  float jumpSize;
+  PImage character_jump;
     
   ////////////////////////////////////////////////////////
   // THE CONSTRUCTOR
@@ -53,9 +63,14 @@ class mapGenerator
     menu_eraser = loadImage("menu_eraser.png");                      // eraser button
     menu_clearall = loadImage("menu_clearall.png");                  // clear all button
     
+    // map images
+    platform_blue = loadImage("platform_blue.png");
+    platform_green = loadImage("platform_green.png");
+    platform_red = loadImage("platform_red.png");
+    platform_cat = loadImage("platform_cat.png");
+    
     // booleans for map making
     is_map_drawn = false;
-    is_map_ready = false;
     
     // booleans for menu
     is_walls = true;
@@ -64,23 +79,34 @@ class mapGenerator
     
     // portals
     portalX[0] = width-550;
-    portalY[0] = 10;
-    portalX[1] = width-450;
-    portalY[1] = 10;
-    portalX[2] = width-350;
-    portalY[2] = 10;
+    portalY[0] = 20;
+    portalX[1] = width-500;
+    portalY[1] = 20;
+    portalX[2] = width-450;
+    portalY[2] = 20;
     portalSize = 30;
     character_portal = loadImage("character_portal.png");
-    character_deathtrap = loadImage("character_deathtrap.png");
     
     // deathtraps
-    trapX[0] = width-250;
-    trapY[0] = 10;
-    trapX[1] = width-150;
-    trapY[1] = 10;
-    trapX[2] = width-50;
-    trapY[2] = 10;
+    trapX[0] = width-350;
+    trapY[0] = 20;
+    trapX[1] = width-300;
+    trapY[1] = 20;
+    trapX[2] = width-250;
+    trapY[2] = 20;
     trapSize = 30;
+    character_deathtrap = loadImage("character_deathtrap.png");
+    
+    // jumps
+    // deathtraps
+    jumpX[0] = width-150;
+    jumpY[0] = 20;
+    jumpX[1] = width-100;
+    jumpY[1] = 20;
+    jumpX[2] = width-50;
+    jumpY[2] = 20;
+    jumpSize = 30;
+    character_jump = loadImage("character_jump.png");
     
     // check for problems!
     //println("LOAD ONCE: Map generator constructor");
@@ -96,10 +122,17 @@ class mapGenerator
   ////////////////////////////////////////////////////////
   void drawMap()
   {
+    // GENERAL PARAMETERS
     noStroke();
     fill(0);
     imageMode(CORNER);
-      
+    
+    // PLATFORMS
+    image(platform_blue, 20, 80);
+    image(platform_green, 20, height-200);
+    image(platform_red, width-150, 80);
+    image(platform_cat, width-150, height-200);
+
     // DRAWING MENU
     pushStyle();
       fill(0);
@@ -127,10 +160,34 @@ class mapGenerator
   {
     if(mouseY > 100 && mousePressed == true) 
     { 
-      pushStyle(); 
-        stroke(0);
+//      pushStyle(); 
+//        stroke(0);
+//        strokeWeight(20);
+//        line(pmouseX,pmouseY,mouseX,mouseY);
+//      popStyle();
+
+    pushStyle();
+        stroke(50,1);
+        strokeWeight(130);
+          line(pmouseX,pmouseY,mouseX,mouseY);
+        stroke(50,3);
+        strokeWeight(100);
+          line(pmouseX,pmouseY,mouseX,mouseY);
+        stroke(50,5);
+        strokeWeight(80);
+          line(pmouseX,pmouseY,mouseX,mouseY);
+        stroke(50,5);
+        strokeWeight(60);
+          line(pmouseX,pmouseY,mouseX,mouseY);
+        stroke(50,5);
+        strokeWeight(40);
+          line(pmouseX,pmouseY,mouseX,mouseY);
+        stroke(50,50);
         strokeWeight(20);
-        line(pmouseX,pmouseY,mouseX,mouseY);
+          line(pmouseX,pmouseY,mouseX,mouseY);
+        stroke(0,255);
+        strokeWeight(10);
+          line(pmouseX,pmouseY,mouseX,mouseY);
       popStyle();
     }
   }
@@ -404,42 +461,17 @@ class mapGenerator
   ////////////////////////////////////////////////////////
   void symbolsMenu()
   {     
-    // SAVE THE MAP
-    // if save button is pressed, save image to data folder
-    if(  
-    mousePressed == true &&
-    mouseX > 10 && 
-    mouseX < menu_start_game.width && 
-    mouseY > 0 && 
-    mouseY < menu_start_game.height
-    )
-    {      
-      // crop and save our drawing in the new directory
-      save("//sdcard/PacKitty/map.jpg");
-      println("Map Saved");
-      
-      // load the new drawing as our new maze
-      drawnMap = loadImage("//sdcard/PacKitty/map.jpg");
-      println("Map Loaded");
-            
-      // change the menu to reflect the image has been saved
-      menu_save_this_map = loadImage("menu_map-saved.png");
-      menu_start_game = loadImage("menu_start-game.png");
-      
-      // we now have a map, therefore is_map_drawn is true
-      is_map_ready = true;
-    }
-    
+    // SHOW THE START GAME BUTTON
+    menu_start_game = loadImage("menu_start-game.png");
     
     // PLAY THE GAME
     // if the start button is pressed, go to next gamephase
     if(
     mousePressed == true &&
-    mouseX > menu_save_this_map.width + 50 &&
-    mouseX < menu_save_this_map.width + 50 + menu_start_game.width &&
+    mouseX > 10 &&
+    mouseX < menu_start_game.width &&
     mouseY > 0 &&
-    mouseY < menu_start_game.height &&
-    is_map_ready == true
+    mouseY < menu_start_game.height
     )
     {
       // change map to previous
@@ -450,15 +482,12 @@ class mapGenerator
       // start timer
       startTime=millis();
       // is_map_drawn must be reset to false
-      is_map_ready = false;
       is_map_drawn = false;
     }
     
     // MENU BUTTONS   
-    // save map
-    image(menu_save_this_map, 10, 0);
     // start game
-    image(menu_start_game, menu_save_this_map.width + 50, 0);
+    image(menu_start_game, 10, 0);
   }
   ////////////////////////////////////////////////////////
   
@@ -468,6 +497,7 @@ class mapGenerator
   ////////////////////////////////////////////////////////
   void drawPortals()
   {
+    imageMode(CENTER);
     int[] movePortal = new int[portalsMax];
     
     // move portals by dragging and dropping
@@ -508,6 +538,7 @@ class mapGenerator
   ////////////////////////////////////////////////////////
   void drawDeathtraps()
   {   
+    imageMode(CENTER);
     int[] moveTrap = new int[trapsMax];
     
     // move the portals by dragging and dropping
@@ -544,6 +575,34 @@ class mapGenerator
   ////////////////////////////////////////////////////////
   void drawWalljump()
   {
+    imageMode(CENTER);
+    int[] moveJump = new int[jumpsMax];
+    
+    // move the portals by dragging and dropping
+    for(int i=0; i<jumpsMax; i++)
+    {
+      moveJump[i] = int( dist(mouseX, mouseY, jumpX[i], jumpY[i]) );
+     
+     // lock to mouseX and mouseY
+     if (moveJump[i] < jumpSize && mousePressed == true)
+     {
+       jumpX[i] = mouseX;
+       jumpY[i] = mouseY;
+     }
+     
+     // shrink traps when they are on the menu
+     if(jumpY[i] > 50)
+     {
+       jumpSize = 50;
+     }
+     else
+     {
+       jumpSize=30;
+     }
+     
+      // show the portals
+      image(character_jump,jumpX[i],jumpY[i],jumpSize,jumpSize);
+    }
   }
   ////////////////////////////////////////////////////////  
 }

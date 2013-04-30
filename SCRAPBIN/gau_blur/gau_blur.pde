@@ -4,24 +4,27 @@ color srcPixels[];
 color dstPixels[];
 
 void setup() {
-  size(512, 256); 
+  size(1280, 800); 
+  background(255);
   myGraphics = createGraphics(width, height);
   dstPixels = new color[width * height];
-
-  //makeDrawing(); 
-  //blurDrawing();
 }
 
-
-void makeDrawing() {
-  myGraphics.beginDraw();
-  myGraphics.background(255); 
-  myGraphics.strokeWeight (5);
-  myGraphics.stroke (0); 
-  myGraphics.smooth(); 
-  myGraphics.line (mouseX, mouseY, 210, 91); 
-  myGraphics.line (210, 91, 150, 177); 
-  myGraphics.endDraw();
+void draw() 
+{ 
+    myGraphics.beginDraw();
+    myGraphics.background(255); 
+    myGraphics.strokeWeight (20);
+    myGraphics.stroke (0); 
+    myGraphics.smooth(); 
+    myGraphics.line (128, 40, 370, 500); 
+    myGraphics.endDraw();
+    
+  if(mousePressed == true)
+  { 
+    blurDrawing(); 
+    image (myGraphics, 0,0);
+  }
 }
 
 void blurDrawing() {
@@ -72,19 +75,4 @@ void blurDrawing() {
   }
 
   myGraphics.updatePixels();
-}
-
-
-
-void draw() {
-  background (200); 
-
-  makeDrawing(); 
-  blurDrawing();
-  
-  image (myGraphics, 0,0);
-}
-
-void keyPressed() {
-  bSaved = true;
 }

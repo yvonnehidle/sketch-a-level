@@ -32,8 +32,8 @@ class pacKitty
   pacKitty()
   {
     // cat movement
-    kittyX=width/2;
-    kittyY=height/2;
+    kittyX=width-150;
+    kittyY=height-200;
     kittyS=5;
     kittyE=0.05;
     

@@ -6,11 +6,17 @@ class blueGhost
   // ghost movement
   float ghostX; // the x position of the ghost
   float ghostY; // the y position of the ghost
+  float ghostXstart; // starting x position of the ghost
+  float ghostYstart; // starting y position of the ghost
   float p_ghostX; // previous x position of the ghost
   float p_ghostY; // previous y position of the ghost
   float ghostVX; // ghost velocity in the X
   float ghostVY; // ghost velocity in the Y
   float ghostS;       // ghost speed when not on the hill
+  
+  // ghost attractions
+  float attractionToTarget;
+  float desireToTraceHill;
   
   // ghost appearance
   color blue1;
@@ -32,8 +38,14 @@ class blueGhost
   blueGhost()
   {
     // ghost movement
-    ghostX = int( random(100, width-100) );
-    ghostY = int( random(100, height-100) );
+    ghostXstart = 75;
+    ghostYstart = 130;
+    ghostX = ghostXstart;
+    ghostY = ghostYstart;
+    
+    // ghost attractions
+    attractionToTarget = 0.3;
+    desireToTraceHill = 3.6;
     
     // ghost appearance
     blue1 = color(33,108,203);
@@ -53,15 +65,6 @@ class blueGhost
     drawnMap.loadPixels(); // load the pixels of our map, just once!
     mapPixels = drawnMap.pixels; // get those pixels!
     pixelValues = new float[9]; // we want a neighborhood of 9 pixels
-    
-    // respawn ghost so it is not next to the cat
-    float distance = dist(kittyRefX,kittyRefY,ghostX,ghostY);
-    if( abs(distance) < 200 )
-    {
-      ghostX = int( random(100, width-100) );
-      ghostY = int( random(100, height-100) );
-      println("NEW VALUE: Blue ghost");
-    }
     
     // check for problems!
     println("LOAD ONCE: Blue ghost map calibrated");
@@ -105,8 +108,6 @@ class blueGhost
   ////////////////////////////////////////////////////////
   void updateGhost()
   {
-    float attractionToTarget = 0.3;
-    float desireToTraceHill = 3.6;
     float dx = kittyRefX - ghostX + mySkin.ghostW/2;
     float dy = kittyRefY - ghostY + mySkin.ghostW/2;
     float dh = sqrt(dx*dx + dy*dy);
@@ -172,28 +173,6 @@ class blueGhost
     // integration
     ghostX = ghostX + ghostVX;
     ghostY = ghostY + ghostVY;
-    
-    // CONSTRAIN GHOSTS TO MAP
-    // if too far up
-    if(ghostY-mySkin.ghostW/2 < 100)
-    {
-      ghostY = height-mySkin.ghostW;
-    }
-    // if too far down
-    else if(ghostY+mySkin.ghostW/2 > height)
-    {
-      ghostY = 100+mySkin.ghostW/2;
-    }
-    // if too far left
-    else if(ghostX-mySkin.ghostW/2 < 0)
-    {
-      ghostX = width-mySkin.ghostW;
-    }
-    // if too far right
-    else if(ghostX+mySkin.ghostW/2 > width)
-    {
-      ghostX = mySkin.ghostW;
-    }
     
     // check for problems
     //println("X: " + p_ghostX + " vs " + ghostX);
