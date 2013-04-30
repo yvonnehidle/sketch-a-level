@@ -38,7 +38,7 @@ class pacKitty
     kittyE=0.05;
     
     // cat appearance
-    packitty = loadShape("packitty.svg");
+    packitty = loadShape("character_packitty.svg");
     kittyW=50;
     kittyH=kittyW;
     lipBottom=radians(30);

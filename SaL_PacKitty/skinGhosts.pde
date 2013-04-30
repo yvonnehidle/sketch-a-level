@@ -24,7 +24,7 @@ class skinGhosts
     ghostH=ghostW;
     
     // shapes
-    ghostBody = loadShape("ghost.svg");
+    ghostBody = loadShape("character_ghost.svg");
     body = ghostBody.getChild("body_1_");
     ears = ghostBody.getChild("ears_1_");
     innerEars = ghostBody.getChild("inner-ears");

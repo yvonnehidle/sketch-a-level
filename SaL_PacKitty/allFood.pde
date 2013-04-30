@@ -52,7 +52,7 @@ class allFood
     fishSize = 40;
     tastyFishX = int( random(0, width) );
     tastyFishY = int( random(0, height) );
-    tastyFish = loadImage("fish.png");
+    tastyFish = loadImage("character_fish.png");
     
     // the ghosts
     ghostsEaten = 0;
@@ -66,7 +66,7 @@ class allFood
     foodY = new int[foodMax];
     foodX = makeFoodX(foodMax);
     foodY = makeFoodY(foodMax);
-    foodBits = loadImage("food.png");
+    foodBits = loadImage("character_food.png");
     
     // catnip!
     total_catNipEaten = 0;
@@ -75,7 +75,7 @@ class allFood
     catNipS = 25;
     isCatHigh = false;
     startHigh = 0;
-    catNip = loadImage("catnip.png");
+    catNip = loadImage("character_catnip.png");
     
     // map related
     darknessThreshold = 150;

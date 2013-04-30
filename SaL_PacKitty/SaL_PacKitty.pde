@@ -22,16 +22,16 @@
   import apwidgets.*;
 
   // images
-  PImage introImage;
-  PImage deathImage;
-  PImage levelImage;
-  PImage goalImage;
-  PImage scoreImage;
+  PImage screen_intro;
+  PImage screen_death;
+  PImage screen_levelup;
+  PImage screen_goals;
+  PImage screen_score;
   PImage drawnMap;
-  PImage game_start;
-  PImage game_continue;
-  PImage game_score;
-  PImage game_restart;
+  PImage navigation_start;
+  PImage navigation_continue;
+  PImage navigation_score;
+  PImage navigation_restart;
   
   // general game variables
   int gamePhase;
@@ -67,16 +67,16 @@ void setup()
   //smooth();
   
   // images
-  introImage = loadImage("intro-screen.png");
-  deathImage = loadImage("death-screen.png");
-  levelImage = loadImage("levelup-screen.png");
-  goalImage = loadImage("goals-screen.png");
-  scoreImage = loadImage("score-screen.png");
+  screen_intro = loadImage("screen_intro.png");
+  screen_death = loadImage("screen_death.png");
+  screen_levelup = loadImage("screen_levelup.png");
+  screen_goals = loadImage("screen_goals.png");
+  screen_score = loadImage("screen_score.png");
   drawnMap = loadImage("map.png");
-  game_start = loadImage("game_start.png");
-  game_continue = loadImage("game_continue.png");
-  game_score = loadImage("game_score.png");
-  game_restart = loadImage("game_restart.png");
+  navigation_start = loadImage("navigation_start.png");
+  navigation_continue = loadImage("navigation_continue.png");
+  navigation_score = loadImage("navigation_score.png");
+  navigation_restart = loadImage("navigation_restart.png");
   
   // general game variables
   gamePhase=0;
@@ -185,7 +185,7 @@ void draw()
 void showIntro()
 {
   // show intro image!
-  background(introImage);
+  background(screen_intro);
   
   // play the music only once!
   if(playMusicOnce == true)
@@ -202,18 +202,18 @@ void showIntro()
   // show the start button
   pushStyle();
     imageMode(CORNER);
-    image(game_start,
-          width -  game_start.width - 20,
-          height - game_start.height - 70
+    image(navigation_start,
+          width -  navigation_start.width - 20,
+          height - navigation_start.height - 70
           );
   popStyle();
   
   // if the user touches the screen, start the map generator!
   if (
   mousePressed == true &&
-  mouseX > width - game_start.width - 20 &&
+  mouseX > width - navigation_start.width - 20 &&
   mouseX < width &&
-  mouseY > height - game_start.height - 70 &&
+  mouseY > height - navigation_start.height - 70 &&
   mouseY < height &&
   gamePhase == 0
   )
@@ -253,7 +253,7 @@ void showGoals()
   }
   
   // show goal image
-  background(goalImage);
+  background(screen_goals);
   
   // display level goals and timer
   pushStyle();
@@ -408,14 +408,14 @@ void win()
 void levelUp()
 {
   // show intro image!
-  background(levelImage);
+  background(screen_levelup);
   
   // show the continue button
   pushStyle();
     imageMode(CORNER);
-    image(game_continue,
-          width -  game_continue.width - 20,
-          height - game_continue.height - 70
+    image(navigation_continue,
+          width -  navigation_continue.width - 20,
+          height - navigation_continue.height - 70
           );
   popStyle();
   
@@ -429,9 +429,9 @@ void levelUp()
   // if the user touches the screen, show our new goals
   if (
   mousePressed == true &&
-  mouseX > width - game_continue.width - 20 &&
+  mouseX > width - navigation_continue.width - 20 &&
   mouseX < width &&
-  mouseY > height - game_continue.height - 70 &&
+  mouseY > height - navigation_continue.height - 70 &&
   mouseY < height
   )
   {
@@ -489,19 +489,19 @@ void lose()
 void showDeath()
 {
   // show intro image!
-  background(deathImage);
+  background(screen_death);
   
   // BUTTON IMAGES
   // show the continue button
   pushStyle();
     imageMode(CORNER);
-    image(game_score,
+    image(navigation_score,
           70,
           150
           );
-    image(game_restart,
+    image(navigation_restart,
           70,
-          150 + game_score.height + 20
+          150 + navigation_score.height + 20
           );
   popStyle();
   
@@ -519,9 +519,9 @@ void showDeath()
   if (
   mousePressed == true &&
   mouseX > 70 &&
-  mouseX < 70 + game_score.width &&
+  mouseX < 70 + navigation_score.width &&
   mouseY > 150 &&
-  mouseY < 150 + game_score.height
+  mouseY < 150 + navigation_score.height
   )
   {
     println("SCORE!");
@@ -536,9 +536,9 @@ void showDeath()
   if (
   mousePressed == true &&
   mouseX > 90 &&
-  mouseX < 90 + game_restart.width &&
-  mouseY > 150 + game_score.height &&
-  mouseY < 150 + game_score.height + 20 + game_restart.height
+  mouseX < 90 + navigation_restart.width &&
+  mouseY > 150 + navigation_score.height &&
+  mouseY < 150 + navigation_score.height + 20 + navigation_restart.height
   )
   {
     println("RESTART TO INTRO");
@@ -563,7 +563,7 @@ void showDeath()
 void showScore()
 {
   // show intro image!
-  background(scoreImage);
+  background(screen_score);
   
   // play the music
   if(playMusicOnce == true)
@@ -576,19 +576,19 @@ void showScore()
   // show the continue button
   pushStyle();
     imageMode(CORNER);
-    image(game_restart,
-          width/2 - game_restart.width/2,
-          height/2 + game_restart.height + 70
+    image(navigation_restart,
+          width/2 - navigation_restart.width/2,
+          height/2 + navigation_restart.height + 70
           );
   popStyle();
   
   // if the user touches the screen, show our new goals
   if (
   mousePressed == true &&
-  mouseX > width/2 - game_restart.width/2 &&
-  mouseX < width/2 + game_restart.width/2 &&
-  mouseY > height/2 + game_restart.height + 70 &&
-  mouseY < height/2 + game_restart.height + 70 + game_restart.height
+  mouseX > width/2 - navigation_restart.width/2 &&
+  mouseX < width/2 + navigation_restart.width/2 &&
+  mouseY > height/2 + navigation_restart.height + 70 &&
+  mouseY < height/2 + navigation_restart.height + 70 + navigation_restart.height
   )
   {
     // reset character values
@@ -631,13 +631,11 @@ void specials()
   // make them portal you!
   for(int i=0; i<myMap.portalsMax; i++)
   {
-    // draw them now
-    pushStyle();
-      stroke(0,174,239);
-      strokeWeight(5);
-      fill(255);
-      ellipse(myMap.portalX[i], myMap.portalY[i], myMap.portalSize, myMap.portalSize);
-    popStyle();
+    // draw them now, only if not on main bar
+    if(myMap.portalY[i] > 50)
+    {
+      image(myMap.character_portal,myMap.portalX[i],myMap.portalY[i],myMap.portalSize,myMap.portalSize);
+    }
   
     // intialize distances from portal to kitty
     myPort[i] = int( dist(myKitty.kittyX,myKitty.kittyY,myMap.portalX[i],myMap.portalY[i]) );
@@ -646,24 +644,17 @@ void specials()
     if (myPort[i] < myMap.portalSize)
     { 
       // randomly roll a number
-      int choosePortal = int( random(0,2) );
+      int choosePortal = int( random(0,3) );
       
       // if the portals are the same, reroll
       if(myMap.portalX[i] == myMap.portalX[choosePortal])
       {
         //println("Portal the same, try again");
-        choosePortal = int( random(0,2) );
+        choosePortal = int( random(0,3) );
       }
       
-      // re draw portal
-      pushStyle();
-        stroke(0,174,239);
-        strokeWeight(5);
-        fill(255,0,0);
-        ellipse(myMap.portalX[i], myMap.portalY[i], myMap.portalSize, myMap.portalSize);
-      popStyle();
-      
-      myKitty.kittyX = myMap.portalX[choosePortal] +100;
+      // relocate the kitty
+      myKitty.kittyX = myMap.portalX[choosePortal];
       myKitty.kittyY = myMap.portalY[choosePortal];
       //println("PORT ME!");
     }
@@ -674,13 +665,11 @@ void specials()
   
   for(int i=0; i<myMap.trapsMax; i++)
   {
-    // draw them now
-    pushStyle();
-      rectMode(CENTER);
-      noStroke();
-      fill(255,0,0);
-      rect(myMap.trapX[i], myMap.trapY[i], myMap.trapSize, myMap.trapSize);
-    popStyle();
+    // draw them now, only if not on menu
+    if(myMap.trapY[i] > 50)
+    {
+      image(myMap.character_deathtrap,myMap.trapX[i],myMap.trapY[i],myMap.trapSize,myMap.trapSize);
+    }
     
     // intialize distances from deathtrap to kitty
     myTrap[i] = int( dist(myKitty.kittyX, myKitty.kittyY, myMap.trapX[i], myMap.trapY[i]) );
