@@ -4,10 +4,6 @@
 ////////////////////////////////////////////////////////
 class mapGenerator
 {   
-  // map related
-//  color srcPixels[];
-//  color dstPixels[];
-
   // menu images
   PImage menu_save_this_map;
   PImage menu_start_game;
@@ -16,9 +12,7 @@ class mapGenerator
   PImage menu_clearall;
   
   // map images
-  PImage platform_blue;
-  PImage platform_green;
-  PImage platform_red;
+  PImage platform_ghost;
   PImage platform_cat;
   
   // booleans for menu
@@ -52,10 +46,7 @@ class mapGenerator
   // THE CONSTRUCTOR
   ////////////////////////////////////////////////////////
   mapGenerator()
-  { 
-    // map related
-//    dstPixels = new color[width * height];
-    
+  {     
     // menu images
     menu_save_this_map = loadImage("menu_save-this-map.png");        // save map button
     menu_start_game = loadImage("menu_blank.png");                   // start menu button
@@ -64,9 +55,7 @@ class mapGenerator
     menu_clearall = loadImage("menu_clearall.png");                  // clear all button
     
     // map images
-    platform_blue = loadImage("platform_blue.png");
-    platform_green = loadImage("platform_green.png");
-    platform_red = loadImage("platform_red.png");
+    platform_ghost = loadImage("platform_ghost.png");
     platform_cat = loadImage("platform_cat.png");
     
     // booleans for map making
@@ -78,6 +67,7 @@ class mapGenerator
     is_clearall = false;
     
     // portals
+    // start position
     portalX[0] = width-550;
     portalY[0] = 20;
     portalX[1] = width-500;
@@ -98,7 +88,6 @@ class mapGenerator
     character_deathtrap = loadImage("character_deathtrap.png");
     
     // jumps
-    // deathtraps
     jumpX[0] = width-150;
     jumpY[0] = 20;
     jumpX[1] = width-100;
@@ -128,9 +117,9 @@ class mapGenerator
     imageMode(CORNER);
     
     // PLATFORMS
-    image(platform_blue, 20, 80);
-    image(platform_green, 20, height-200);
-    image(platform_red, width-150, 80);
+    image(platform_ghost, 20, 80);
+    image(platform_ghost, 20, height-200);
+    image(platform_ghost, width-150, 80);
     image(platform_cat, width-150, height-200);
 
     // DRAWING MENU

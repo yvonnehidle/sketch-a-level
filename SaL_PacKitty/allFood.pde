@@ -137,7 +137,7 @@ class allFood
       
       // EAT THE FOOD
       // if kitty overlaps food, eat it!
-      if (kittyEat < foodSize)
+      if (kittyEat < foodSize && isCatHigh == false)
       {
         // play eating sound
         player.setMediaFile("eatKibble.mp3");
@@ -233,7 +233,8 @@ class allFood
     if (kittyEat < catNipS && isCatHigh == false)
     { 
       // cat grows
-      //player.setMediaFile("catnip-grow.wav");
+      player2.setMediaFile("catnip-grow.wav");
+      player2.start();
       
       // count the catnip
       total_catNipEaten++;
@@ -259,8 +260,8 @@ class allFood
       isCatHigh = false;
       
       // cat shrinks
-      //player.setMediaFile("catnip-shrink.wav");
-      //player.start();
+      player2.setMediaFile("catnip-shrink.wav");
+      //player2.start();
     }
   }
   ////////////////////////////////////////////////////////

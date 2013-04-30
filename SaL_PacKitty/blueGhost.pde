@@ -38,7 +38,7 @@ class blueGhost
   blueGhost()
   {
     // ghost movement
-    ghostXstart = 75;
+    ghostXstart = 80;
     ghostYstart = 130;
     ghostX = ghostXstart;
     ghostY = ghostYstart;

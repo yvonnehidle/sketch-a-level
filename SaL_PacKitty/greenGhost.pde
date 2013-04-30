@@ -34,8 +34,8 @@ class greenGhost
   greenGhost()
   {
     // ghost movement
-    ghostXstart = 75;
-    ghostYstart = height-100;
+    ghostXstart = 80;
+    ghostYstart = height-150;
     ghostX = ghostXstart;
     ghostY = ghostYstart;
     ghostS = 5;

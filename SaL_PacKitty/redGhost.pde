@@ -8,6 +8,8 @@ class redGhost
   // ghost movement
   float ghostX;       // the x position of the ghost
   float ghostY;       // the y position of the ghost
+  float ghostXstart;  // starting position in the x
+  float ghostYstart;  // starting position in the y
   float p_ghostX;     // previous x position of the ghost
   float p_ghostY;     // previous y position of the ghost
   float ghostVX;      // ghost velocity in the X
@@ -34,8 +36,10 @@ class redGhost
   redGhost()
   {
     // ghost movement
-    ghostX = width-150;
-    ghostY = 80;
+    ghostXstart = width-90;
+    ghostYstart = 130;
+    ghostX = ghostXstart;
+    ghostY = ghostYstart;
     ghostS = 5;
     
     // ghost appearance

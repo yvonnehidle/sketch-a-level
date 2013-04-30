@@ -56,6 +56,7 @@
   
   // audio related
   PMediaPlayer player;
+  PMediaPlayer player2;
   boolean playMusicOnce; 
 ////////////////////////////////////////////////////////
 
@@ -106,6 +107,9 @@ void setup()
   player = new PMediaPlayer(this);
   player.setLooping(false);
   playMusicOnce = true;
+  
+  player2 = new PMediaPlayer(this);
+  player2.setLooping(false);
   
   // check for problems!
   //println("LOAD ONCE: Drawing setup");
@@ -401,7 +405,7 @@ void playNow()
   lose();
   win();
   
-  noLoop();
+  //noLoop();
   
   // check for problems!
   //println("LOOPING: Game play");
@@ -458,15 +462,20 @@ void win()
     // make the ghosts faster!
     
     // reset the character values!
+    myBlue.ghostX = myBlue.ghostXstart;
+    myBlue.ghostY = myBlue.ghostYstart;
+    myGreen.ghostX = myGreen.ghostXstart;
+    myGreen.ghostY = myGreen.ghostYstart;
+    myRed.ghostX = myRed.ghostXstart;
+    myRed.ghostY = myRed.ghostYstart;
+    myKitty.kittyX = myKitty.kittyXstart;
+    myKitty.kittyY = myKitty.kittyYstart;
     myFood.isCatHigh = false;
-    
-    // reset the food placement
     
     // reset the score
     myFood.kibbleEaten = 0;
     myFood.fishEaten = 0;
     myFood.ghostsEaten = 0;
-    
     
     // pacKitty wins this level!
     playMusicOnce = true;
@@ -540,14 +549,45 @@ void lose()
     // make the ghosts go back to level 1
       
     // reset the character values!
+    myBlue.ghostX = myBlue.ghostXstart;
+    myBlue.ghostY = myBlue.ghostYstart;
+    myGreen.ghostX = myGreen.ghostXstart;
+    myGreen.ghostY = myGreen.ghostYstart;
+    myRed.ghostX = myRed.ghostXstart;
+    myRed.ghostY = myRed.ghostYstart;
+    myKitty.kittyX = myKitty.kittyXstart;
+    myKitty.kittyY = myKitty.kittyYstart;
     myFood.isCatHigh = false;
-      
-    // reset the food placement
       
     // reset the score
     myFood.kibbleEaten = 0;
     myFood.fishEaten = 0;
     myFood.ghostsEaten = 0;
+    
+    // reset portals
+    // start position
+    myMap.portalX[0] = width-550;
+    myMap.portalY[0] = 20;
+    myMap.portalX[1] = width-500;
+    myMap.portalY[1] = 20;
+    myMap.portalX[2] = width-450;
+    myMap.portalY[2] = 20;
+
+    // deathtraps
+    myMap.trapX[0] = width-350;
+    myMap.trapY[0] = 20;
+    myMap.trapX[1] = width-300;
+    myMap.trapY[1] = 20;
+    myMap.trapX[2] = width-250;
+    myMap.trapY[2] = 20;
+    
+    // jumps
+    myMap.jumpX[0] = width-150;
+    myMap.jumpY[0] = 20;
+    myMap.jumpX[1] = width-100;
+    myMap.jumpY[1] = 20;
+    myMap.jumpX[2] = width-50;
+    myMap.jumpY[2] = 20;
   
     // pacKitty dies!
     playMusicOnce = true;
@@ -792,25 +832,34 @@ void eatGhosts()
   // eat the blue ghost
   if(yum_myBlue < myKitty.kittyW && myFood.isCatHigh == true)
   {
-    myBlue.ghostX = 0;
-    myBlue.ghostY = 0;
+    player2.setMediaFile("eatGhost.mp3");
+    player2.start();
+    myBlue.ghostX = myBlue.ghostXstart;
+    myBlue.ghostY = myBlue.ghostYstart;
     myFood.ghostsEaten++;
+    myFood.total_ghostsEaten++;
   }
   
   // eat the green ghost
   if (yum_myGreen < myKitty.kittyW && myFood.isCatHigh == true)
   {
-    myGreen.ghostX = 0;
-    myGreen.ghostY = 0;
+    player2.setMediaFile("eatGhost.mp3");
+    player2.start();
+    myGreen.ghostX = myGreen.ghostXstart;
+    myGreen.ghostY = myGreen.ghostYstart;
     myFood.ghostsEaten++;
+    myFood.total_ghostsEaten++;
   }
   
   // eat the red ghost
   if (yum_myRed < myKitty.kittyW && myFood.isCatHigh == true)
   {
-    myRed.ghostX = 0;
-    myRed.ghostY = 0;
+    player2.setMediaFile("eatGhost.mp3");
+    player2.start();
+    myRed.ghostX = myRed.ghostXstart;
+    myRed.ghostY = myRed.ghostYstart;
     myFood.ghostsEaten++;
+    myFood.total_ghostsEaten++;
   }
 }
 ////////////////////////////////////////////////////////

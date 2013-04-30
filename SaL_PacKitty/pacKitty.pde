@@ -4,10 +4,12 @@
 class pacKitty
 {
   // cat movement
-  float kittyX; // x
-  float kittyY; // y
-  float kittyS; // velocity
-  float kittyE; // kitty velocity when not on a hill
+  float kittyX;        // x
+  float kittyY;        // y
+  float kittyXstart;   // starting x position
+  float kittyYstart;   // starting y position
+  float kittyS;        // velocity
+  float kittyE;        // kitty velocity when not on a hill
   boolean isCatHighRef;
   
   // cat appearance
@@ -32,10 +34,12 @@ class pacKitty
   pacKitty()
   {
     // cat movement
-    kittyX=width-150;
-    kittyY=height-200;
-    kittyS=5;
-    kittyE=0.05;
+    kittyXstart = width-90;
+    kittyYstart = height-130;
+    kittyX = kittyXstart;
+    kittyY = kittyYstart;
+    kittyS = 5;
+    kittyE = 0.05;
     
     // cat appearance
     packitty = loadShape("character_packitty.svg");
@@ -237,7 +241,7 @@ class pacKitty
     
     // CONSTRAIN KITTY TO THE BOUNDS OF THE MAP
     // if too far up
-    if(kittyY-kittyW/2 < 100)
+    if(kittyY-kittyW/2 < 50)
     {
       kittyY = height-kittyW;
     }
