@@ -17,6 +17,7 @@ class blueGhost
   // ghost attractions
   float attractionToTarget;
   float desireToTraceHill;
+  boolean isCatHighRef;
   
   // ghost appearance
   color blue1;
@@ -42,10 +43,6 @@ class blueGhost
     ghostYstart = 130;
     ghostX = ghostXstart;
     ghostY = ghostYstart;
-    
-    // ghost attractions
-    attractionToTarget = 0.3;
-    desireToTraceHill = 3.6;
     
     // ghost appearance
     blue1 = color(33,108,203);
@@ -108,9 +105,24 @@ class blueGhost
   ////////////////////////////////////////////////////////
   void updateGhost()
   {
+    // LOCALS
     float dx = kittyRefX - ghostX + mySkin.ghostW/2;
     float dy = kittyRefY - ghostY + mySkin.ghostW/2;
     float dh = sqrt(dx*dx + dy*dy);
+    
+    
+    // MAKE GHOSTS SCARED
+    if(isCatHighRef == true)
+    {
+      attractionToTarget = -0.3;
+      desireToTraceHill = 3.6;
+    }
+    else
+    {
+      attractionToTarget = 0.3;
+      desireToTraceHill = 3.6;
+    }
+    
   
     if (dh > 0)
     {
@@ -173,6 +185,29 @@ class blueGhost
     // integration
     ghostX = ghostX + ghostVX;
     ghostY = ghostY + ghostVY;
+    
+    
+    // CONSTRAIN GHOSTS TO MAP
+    // if too far up
+    if(ghostY-mySkin.ghostW/2 < 50)
+    {
+      ghostY = 50 + mySkin.ghostW;
+    }
+    // if too far down
+    else if(ghostY+mySkin.ghostW/2 > height)
+    {
+      ghostY = height - mySkin.ghostW;
+    }
+    // if too far left
+    else if(ghostX-mySkin.ghostW/2 < 0)
+    {
+      ghostX = mySkin.ghostW;
+    }
+    // if too far right
+    else if(ghostX+mySkin.ghostW/2 > width)
+    {
+      ghostX = width - mySkin.ghostW;
+    }
     
     // check for problems
     //println("X: " + p_ghostX + " vs " + ghostX);

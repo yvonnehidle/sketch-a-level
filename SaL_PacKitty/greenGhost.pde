@@ -4,15 +4,20 @@
 class greenGhost
 {
   // ghost movement
-  float ghostX; // the x position of the ghost
-  float ghostY; // the y position of the ghost
-  float ghostXstart; // the starting x position
-  float ghostYstart; // the starting y position
-  float p_ghostX; // previous x position of the ghost
-  float p_ghostY; // previous y position of the ghost
-  float ghostVX; // ghost velocity in the X
-  float ghostVY; // ghost velocity in the Y
-  float ghostS;       // ghost speed when not on the hill
+  float ghostX;         // the x position of the ghost
+  float ghostY;         // the y position of the ghost
+  float ghostXstart;    // the starting x position
+  float ghostYstart;    // the starting y position
+  float p_ghostX;       // previous x position of the ghost
+  float p_ghostY;       // previous y position of the ghost
+  float ghostVX;        // ghost velocity in the X
+  float ghostVY;        // ghost velocity in the Y
+  float ghostS;         // ghost speed when not on the hill
+  
+  // ghost attractions
+  float attractionToTarget;
+  float desireToTraceHill;
+  boolean isCatHighRef;
    
   // ghost appearance
   color green1;  // body color of the ghost
@@ -101,11 +106,21 @@ class greenGhost
   ////////////////////////////////////////////////////////
   void updateGhost()
   {
-    float attractionToTarget = 0.3;
-    float desireToTraceHill = 3.6;
     float dx = kittyRefX - ghostX + mySkin.ghostW/2;
     float dy = kittyRefY - ghostY + mySkin.ghostW/2;
     float dh = sqrt(dx*dx + dy*dy);
+    
+    // ghost should be scared!
+    if(isCatHighRef == true)
+    {
+      attractionToTarget = -0.3;
+      desireToTraceHill = 3.6;
+    }
+    else
+    {
+      attractionToTarget = 0.3;
+      desireToTraceHill = 3.6;
+    }
   
     if (dh > 0)
     {
@@ -158,6 +173,7 @@ class greenGhost
       ghostVY = ghostVY + hy;
     }
     
+    
     // STORE THE GHOST'S PREVIOUS POSITION
     p_ghostX = ghostX;
     p_ghostY = ghostY;
@@ -168,6 +184,29 @@ class greenGhost
     // integration
     ghostX = ghostX + ghostVX;
     ghostY = ghostY + ghostVY;
+    
+    
+    // CONSTRAIN GHOSTS TO MAP
+    // if too far up
+    if(ghostY-mySkin.ghostW/2 < 50)
+    {
+      ghostY = 50 + mySkin.ghostW;
+    }
+    // if too far down
+    else if(ghostY+mySkin.ghostW/2 > height)
+    {
+      ghostY = height - mySkin.ghostW;
+    }
+    // if too far left
+    else if(ghostX-mySkin.ghostW/2 < 0)
+    {
+      ghostX = mySkin.ghostW;
+    }
+    // if too far right
+    else if(ghostX+mySkin.ghostW/2 > width)
+    {
+      ghostX = width - mySkin.ghostW;
+    }
   }
   ////////////////////////////////////////////////////////
   

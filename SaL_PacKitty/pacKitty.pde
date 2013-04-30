@@ -243,7 +243,7 @@ class pacKitty
     // if too far up
     if(kittyY-kittyW/2 < 50)
     {
-      kittyY = height-kittyW;
+      kittyY = height-kittyW/2;
     }
     // if too far down
     else if(kittyY+kittyW/2 > height)
@@ -253,12 +253,12 @@ class pacKitty
     // if too far left
     else if(kittyX-kittyW/2 < 0)
     {
-      kittyX = width-kittyW;
+      kittyX = width-kittyW/2;
     }
     // if too far right
     else if(kittyX+kittyW/2 > width)
     {
-      kittyX = kittyW;
+      kittyX = kittyW/2;
     }
     
     // ROTATE THE CAT ACCORDINGLY

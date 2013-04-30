@@ -373,12 +373,15 @@ void playNow()
   // to the red ghost
   myRed.kittyRefX = myKitty.kittyX;
   myRed.kittyRefY = myKitty.kittyY;
+  myRed.isCatHighRef = myFood.isCatHigh;
   // to the blue ghost
-  myBlue.kittyRefX = myKitty.kittyX+100;
-  myBlue.kittyRefY = myKitty.kittyY+100;
+  myBlue.kittyRefX = myKitty.kittyX;
+  myBlue.kittyRefY = myKitty.kittyY;
+  myBlue.isCatHighRef = myFood.isCatHigh;
   // to the blue ghost
-  myGreen.kittyRefX = myKitty.kittyX-100;
-  myGreen.kittyRefY = myKitty.kittyY-100;
+  myGreen.kittyRefX = myKitty.kittyX;
+  myGreen.kittyRefY = myKitty.kittyY;
+  myGreen.isCatHighRef = myFood.isCatHigh;
   // to the food class
   myFood.kittyRefX = myKitty.kittyX;
   myFood.kittyRefY = myKitty.kittyY;
