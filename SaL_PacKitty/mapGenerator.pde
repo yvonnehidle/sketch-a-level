@@ -7,9 +7,11 @@ class mapGenerator
   // map related
   color srcPixels[];
   color dstPixels[];
+  PImage startingMap;
 
   // menu images
   PImage menu_save_this_map;
+  PImage menu_format_map;
   PImage menu_start_game;
   PImage menu_walls;
   PImage menu_eraser;
@@ -52,6 +54,7 @@ class mapGenerator
     
     // menu images
     menu_save_this_map = loadImage("menu_save-this-map.png");        // save map button
+    menu_format_map = loadImage("menu_blank.png");                   // format menu button
     menu_start_game = loadImage("menu_blank.png");                   // start menu button
     menu_walls = loadImage("menu_walls-selected.png");               // walls button
     menu_eraser = loadImage("menu_eraser.png");                      // eraser button
@@ -186,38 +189,73 @@ class mapGenerator
       // make a new directory to save files
       File folder = new File("//sdcard/PacKitty/");
       folder.mkdirs();
+      println("Directory created");
           
       // crop and save our drawing in the new directory
       save("//sdcard/PacKitty/map.jpg");
+      println("Saved map");
           
       // load the new drawing as our new maze
-      drawnMap = loadImage("//sdcard/PacKitty/map.jpg");
+      startingMap = loadImage("//sdcard/PacKitty/map.jpg");
+      println("Image loaded to startingMap");
           
       // change the menu to reflect the image has been saved
       menu_save_this_map = loadImage("menu_map-saved.png");
-      menu_start_game = loadImage("menu_proceed.png");
+      menu_format_map = loadImage("menu_format-map.png");
           
       // we now have a map, therefore is_map_drawn is true
       is_map_drawn = true;
     }
     
     
-    // PROCEED TO SYMBOLS MENU!
-    // if the start button is pressed, go to next gamephase
+    // FORMAT THE MAP
+    // if the format map button is pressed, blur our map
     if(
     mousePressed == true &&
-    mouseX > menu_save_this_map.width + 50 &&
-    mouseX < menu_save_this_map.width + 50 + menu_start_game.width &&
+    mouseX > menu_save_this_map.width + 20 &&
+    mouseX < menu_save_this_map.width + 20 + menu_format_map.width &&
     mouseY > 0 &&
     mouseY < menu_start_game.height
     )
     { 
         // blur map
+        println("Blurring map");
         blurMap();
         
+        background(startingMap);
+        
+        // change the button, map is formatted
+        menu_format_map = loadImage("menu_map-formatted.png");
+        
+        // show our proceed button
+        menu_start_game = loadImage("menu_proceed.png");
+    }
+    
+    
+    // GO TO SYMBOLS MENU
+    // get things ready to change screens
+    if(
+    mousePressed == true &&
+    mouseX > menu_save_this_map.width + 20 + menu_format_map.width + 20 &&
+    mouseX < menu_save_this_map.width + 20 + menu_format_map.width + 20 + menu_start_game.width &&
+    mouseY > 0 &&
+    mouseY < menu_start_game.height
+    )
+    {   
+        // crop and save our drawing in the new directory
+        save("//sdcard/PacKitty/map.jpg");
+        println("Image saved");
+            
+        // load the new drawing as our new maze
+        drawnMap = loadImage("//sdcard/PacKitty/map.jpg");
+        print("Image loaded to drawnMap");
+      
         // is_map_drawn must be reset to false
         is_map_drawn = false;
+        
+        // make our images blank again
         menu_start_game = loadImage("menu_blank.png");
+        menu_format_map = loadImage("menu_blank.png");
         
         // change map to previous
         menu_save_this_map = loadImage("menu_save-this-map.png");
@@ -305,14 +343,17 @@ class mapGenerator
     // MENU BUTTONS   
     // save map
     image(menu_save_this_map, 10, 0);
+    // format map
+    image(menu_format_map, menu_save_this_map.width + 20, 0);
+    // start game
+    image(menu_start_game, menu_save_this_map.width + 20 + menu_format_map.width + 20, 0);
+    
     // draw walls
     image(menu_walls, width - menu_clearall.width - menu_eraser.width - menu_walls.width - 60, 0);
     // eraser
     image(menu_eraser, width - menu_clearall.width - menu_eraser.width - 40, 0);
     // clear screen
     image(menu_clearall, width - menu_clearall.width - 20,0);
-    // start game
-    image(menu_start_game, menu_save_this_map.width + 50, 0);
     
     //println(is_map_drawn);
   }
@@ -327,8 +368,8 @@ class mapGenerator
   ////////////////////////////////////////////////////////
   void blurMap()
   {
-    drawnMap.loadPixels(); 
-    srcPixels = drawnMap.pixels;
+    startingMap.loadPixels(); 
+    srcPixels = startingMap.pixels;
     int nPasses = 20; 
     
     // FOR THE X DIRECTION PLEASE
@@ -416,7 +457,7 @@ class mapGenerator
       }
     }
   
-    drawnMap.updatePixels();
+    startingMap.updatePixels();
   }
   ////////////////////////////////////////////////////////
   
