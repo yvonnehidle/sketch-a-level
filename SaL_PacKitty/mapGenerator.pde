@@ -4,16 +4,16 @@
 ////////////////////////////////////////////////////////
 class mapGenerator
 {   
+  // map related
+  color srcPixels[];
+  color dstPixels[];
+
   // menu images
   PImage menu_save_this_map;
   PImage menu_start_game;
   PImage menu_walls;
   PImage menu_eraser;
   PImage menu_clearall;
-  
-  // map images
-  PImage platform_ghost;
-  PImage platform_cat;
   
   // booleans for menu
   boolean is_map_drawn;
@@ -46,17 +46,16 @@ class mapGenerator
   // THE CONSTRUCTOR
   ////////////////////////////////////////////////////////
   mapGenerator()
-  {     
+  { 
+    // map related
+    dstPixels = new color[width * height];
+    
     // menu images
     menu_save_this_map = loadImage("menu_save-this-map.png");        // save map button
     menu_start_game = loadImage("menu_blank.png");                   // start menu button
     menu_walls = loadImage("menu_walls-selected.png");               // walls button
     menu_eraser = loadImage("menu_eraser.png");                      // eraser button
     menu_clearall = loadImage("menu_clearall.png");                  // clear all button
-    
-    // map images
-    platform_ghost = loadImage("platform_ghost.png");
-    platform_cat = loadImage("platform_cat.png");
     
     // booleans for map making
     is_map_drawn = false;
@@ -115,13 +114,7 @@ class mapGenerator
     noStroke();
     fill(0);
     imageMode(CORNER);
-    
-    // PLATFORMS
-    image(platform_ghost, 20, 80);
-    image(platform_ghost, 20, height-200);
-    image(platform_ghost, width-150, 80);
-    image(platform_cat, width-150, height-200);
-
+   
     // DRAWING MENU
     pushStyle();
       fill(0);
@@ -149,34 +142,10 @@ class mapGenerator
   {
     if(mouseY > 100 && mousePressed == true) 
     { 
-//      pushStyle(); 
-//        stroke(0);
-//        strokeWeight(20);
-//        line(pmouseX,pmouseY,mouseX,mouseY);
-//      popStyle();
-
-    pushStyle();
-        stroke(50,1);
-        strokeWeight(130);
-          line(pmouseX,pmouseY,mouseX,mouseY);
-        stroke(50,3);
-        strokeWeight(100);
-          line(pmouseX,pmouseY,mouseX,mouseY);
-        stroke(50,5);
-        strokeWeight(80);
-          line(pmouseX,pmouseY,mouseX,mouseY);
-        stroke(50,5);
-        strokeWeight(60);
-          line(pmouseX,pmouseY,mouseX,mouseY);
-        stroke(50,5);
-        strokeWeight(40);
-          line(pmouseX,pmouseY,mouseX,mouseY);
-        stroke(50,50);
-        strokeWeight(20);
-          line(pmouseX,pmouseY,mouseX,mouseY);
+      pushStyle();
         stroke(0,255);
-        strokeWeight(10);
-          line(pmouseX,pmouseY,mouseX,mouseY);
+        strokeWeight(20);
+        line(pmouseX,pmouseY,mouseX,mouseY);
       popStyle();
     }
   }
@@ -213,28 +182,21 @@ class mapGenerator
     mouseY > 0 && 
     mouseY < menu_start_game.height
     )
-    {      
+    {        
       // make a new directory to save files
       File folder = new File("//sdcard/PacKitty/");
       folder.mkdirs();
-      println("Directory Made");
-      
+          
       // crop and save our drawing in the new directory
       save("//sdcard/PacKitty/map.jpg");
-      println("Map Saved");
-      
+          
       // load the new drawing as our new maze
       drawnMap = loadImage("//sdcard/PacKitty/map.jpg");
-      println("Map Loaded");
-      
-      // blur drawn map
-      //blurMap();
-      //println("Image Blurred");
-      
+          
       // change the menu to reflect the image has been saved
       menu_save_this_map = loadImage("menu_map-saved.png");
       menu_start_game = loadImage("menu_proceed.png");
-      
+          
       // we now have a map, therefore is_map_drawn is true
       is_map_drawn = true;
     }
@@ -249,15 +211,19 @@ class mapGenerator
     mouseY > 0 &&
     mouseY < menu_start_game.height
     )
-    {
-      // is_map_drawn must be reset to false
-      is_map_drawn = false;
-      menu_start_game = loadImage("menu_blank.png");
-      // change map to previous
-      menu_save_this_map = loadImage("menu_save-this-map.png");
-      
-      // switch phases
-      gamePhase = 2;
+    { 
+        // blur map
+        blurMap();
+        
+        // is_map_drawn must be reset to false
+        is_map_drawn = false;
+        menu_start_game = loadImage("menu_blank.png");
+        
+        // change map to previous
+        menu_save_this_map = loadImage("menu_save-this-map.png");
+        
+        // switch phases
+        gamePhase = 2;
     }
     
     
@@ -359,58 +325,99 @@ class mapGenerator
   ////////////////////////////////////////////////////////
   // BLUR DRAWN MAP
   ////////////////////////////////////////////////////////
-//  void blurMap()
-//  {
-//    drawnMap.loadPixels(); 
-//    srcPixels = drawnMap.pixels;
-//  
-//    int nPasses = 20; 
-//    
-//    for (int p=0; p<nPasses; p++) {
-//  
-//      for (int y=0; y<height; y++) {
-//        for (int x=0; x<width; x++) {
-//  
-//          int row = (y*width) + x; 
-//          int i0 = row - 3;
-//          int i1 = row - 2;
-//          int i2 = row - 1;
-//          int i3 = row    ; 
-//          int i4 = row + 1;
-//          int i5 = row + 2;
-//          int i6 = row + 3;
-//  
-//          color c0 = (x < 3)        ? 255: srcPixels[i0];
-//          color c1 = (x < 2)        ? 255: srcPixels[i1];
-//          color c2 = (x < 1)        ? 255: srcPixels[i2];
-//          color c3 =                       srcPixels[i3];
-//          color c4 = (x >= width-1) ? 255: srcPixels[i4];
-//          color c5 = (x >= width-2) ? 255: srcPixels[i5];
-//          color c6 = (x >= width-3) ? 255: srcPixels[i6];
-//  
-//          float b0 =      (0xFF & c0); // extract the blue value
-//          float b1 = 6  * (0xFF & c1); 
-//          float b2 = 15 * (0xFF & c2); 
-//          float b3 = 20 * (0xFF & c3); 
-//          float b4 = 15 * (0xFF & c4); 
-//          float b5 = 6  * (0xFF & c5); 
-//          float b6 =      (0xFF & c6); 
-//  
-//          int avg = (int)((b0+b1+b2+b3+b4+b5+b6)/64);
-//          dstPixels[i3] = color(avg);
-//        }
-//      } 
-//  
-//      int nPixels = width * height; 
-//      for (int i=0; i<nPixels; i++) {
-//        srcPixels[i] = dstPixels[i];
-//      }
-//    }
-//  
-//    drawnMap.updatePixels();
-//    
-//    println("Blur image function");
-//  }
+  void blurMap()
+  {
+    drawnMap.loadPixels(); 
+    srcPixels = drawnMap.pixels;
+    int nPasses = 20; 
+    
+    // FOR THE X DIRECTION PLEASE
+    for (int p=0; p<nPasses; p++) 
+    {
+      for (int y=0; y<height; y++) 
+      {
+        for (int x=0; x<width; x++) 
+        {
+          int row = (y*width) + x; 
+          int i0 = row - 3;
+          int i1 = row - 2;
+          int i2 = row - 1;
+          int i3 = row    ; 
+          int i4 = row + 1;
+          int i5 = row + 2;
+          int i6 = row + 3;
+    
+          color c0 = (x < 3)        ? 255: srcPixels[i0];
+          color c1 = (x < 2)        ? 255: srcPixels[i1];
+          color c2 = (x < 1)        ? 255: srcPixels[i2];
+          color c3 =                       srcPixels[i3];
+          color c4 = (x >= width-1) ? 255: srcPixels[i4];
+          color c5 = (x >= width-2) ? 255: srcPixels[i5];
+          color c6 = (x >= width-3) ? 255: srcPixels[i6];
+            
+          float b0 =      (0xFF & c0); // extract the blue value
+          float b1 = 6  * (0xFF & c1); 
+          float b2 = 15 * (0xFF & c2); 
+          float b3 = 20 * (0xFF & c3); 
+          float b4 = 15 * (0xFF & c4); 
+          float b5 = 6  * (0xFF & c5); 
+          float b6 =      (0xFF & c6);
+            
+          int avg = (int)((b0+b1+b2+b3+b4+b5+b6)/64);
+          dstPixels[i3] = color(avg);
+        }
+      } 
+      int nPixels = width * height; 
+      for (int i=0; i<nPixels; i++) 
+      {
+        srcPixels[i] = dstPixels[i];
+      }
+    }
+  
+    // FOR THE Y DIRECTION PLEASE
+    for (int p=0; p<nPasses; p++) 
+    {
+      for (int y=0; y<height; y++) 
+      {
+        for (int x=0; x<width; x++) 
+        {
+          int j0 = (y-3)*width + x;
+          int j1 = (y-2)*width + x;
+          int j2 = (y-1)*width + x;
+          int j3 = (y)*width + x;
+          int j4 = (y+1)*width + x;
+          int j5 = (y+2)*width + x;
+          int j6 = (y+3)*width + x;
+          
+          color color0 = (y < 3)          ? 255: srcPixels[j0];
+          color color1 = (y < 2)          ? 255: srcPixels[j1];
+          color color2 = (y < 1)          ? 255: srcPixels[j2];
+          color color3 =                         srcPixels[j3];
+          color color4 = (y >= height-1)  ? 255: srcPixels[j4];
+          color color5 = (y >= height-2)  ? 255: srcPixels[j5];
+          color color6 = (y >= height-3)  ? 255: srcPixels[j6];
+          
+          float blue0 =      (0xFF & color0);
+          float blue1 = 6  * (0xFF & color1);
+          float blue2 = 15 * (0xFF & color2);
+          float blue3 = 20 * (0xFF & color3);
+          float blue4 = 15 * (0xFF & color4);
+          float blue5 = 6  * (0xFF & color5);
+          float blue6 =      (0xFF & color6);
+          
+          int avg2 = (int)((blue0+blue1+blue2+blue3+blue4+blue5+blue6)/64);
+          dstPixels[j3] = color(avg2);
+        }
+      } 
+      int nPixels = width * height; 
+      for (int i=0; i<nPixels; i++) 
+      {
+        srcPixels[i] = dstPixels[i];
+      }
+    }
+  
+    drawnMap.updatePixels();
+  }
   ////////////////////////////////////////////////////////
   
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -462,7 +469,7 @@ class mapGenerator
     mouseY > 0 &&
     mouseY < menu_start_game.height
     )
-    {
+    {      
       // change map to previous
       menu_save_this_map = loadImage("menu_save-this-map.png");
       menu_start_game = loadImage("menu_blank.png");
