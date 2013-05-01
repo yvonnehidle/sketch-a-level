@@ -28,6 +28,7 @@
   PImage navigation_continue;
   PImage navigation_score;
   PImage navigation_restart;
+  PImage navigation_newmap;
   
   // screen booleans
   boolean is_intro;
@@ -77,6 +78,7 @@ void setup()
   navigation_continue = loadImage("navigation_continue.png");
   navigation_score = loadImage("navigation_score.png");
   navigation_restart = loadImage("navigation_restart.png");
+  navigation_newmap = loadImage("navigation_newmap.png");
   
   // screen booleans
   is_intro = true;
@@ -245,7 +247,7 @@ void draw()
   }
   
   // check for problems!
-  println(frameRate);
+  //println(frameRate);
 }
 ////////////////////////////////////////////////////////
 
@@ -463,6 +465,9 @@ void win()
     goalGhosts++;
     
     // make the ghosts faster!
+    myBlue.frictionClear = myBlue.frictionClear + 0.1;
+    myGreen.frictionClear = myGreen.frictionClear + 0.1;
+    myRed.frictionClear = myRed.frictionClear + 0.1;
     
     // reset the character values!
     myBlue.ghostX = myBlue.ghostXstart;
@@ -549,7 +554,10 @@ void lose()
     goalFish = 1;
     goalGhosts = 0;
       
-    // make the ghosts go back to level 1
+    // make the ghosts slow again
+    myBlue.frictionClear = 0.8;
+    myGreen.frictionClear = 0.8;
+    myRed.frictionClear = 0.8;
       
     // reset the character values!
     myBlue.ghostX = myBlue.ghostXstart;
@@ -566,9 +574,100 @@ void lose()
     myFood.kibbleEaten = 0;
     myFood.fishEaten = 0;
     myFood.ghostsEaten = 0;
+  
+    // pacKitty dies!
+    playMusicOnce = true;
+    gamePhase=6;
+  }
+}
+////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////
+// DEATH SCREEN
+// this is the screen you see when you die
+////////////////////////////////////////////////////////
+void showDeath()
+{
+  // show intro image!
+  background(screen);
+  
+  // MUSIC
+  // play the music only once!
+  if(playMusicOnce == true)
+  {
+    player.setMediaFile("death.wav");
+    player.start();
+    playMusicOnce = false; 
+  }
+  
+  // BUTTON IMAGES
+  // show the continue button
+  pushStyle();
+    imageMode(CORNER);
+    image(navigation_score,
+          70,
+          150
+          );
+    image(navigation_restart,
+          70,
+          150 + navigation_score.height + 20
+          );
+    image(navigation_newmap,
+          70,
+          150 + navigation_score.height + 20 + navigation_restart.height + 20
+          );
+  popStyle();
+  
+  
+  // THE SCORE BUTTON
+  // if the user touches the score button, show the score
+  if (
+  mousePressed == true &&
+  mouseX > 70 &&
+  mouseX < 70 + navigation_score.width &&
+  mouseY > 150 &&
+  mouseY < 150 + navigation_score.height
+  )
+  {
+    println("SCORE!");
+    // get the music ready
+    playMusicOnce = true;
+    // change our game phase to 7
+    gamePhase = 7;
+  }
+  
+  
+  // THE RESTART BUTTON
+  // if the user touches the restart button, go to the goals page
+  if (
+  mousePressed == true &&
+  mouseX > 70 &&
+  mouseX < 70 + navigation_restart.width &&
+  mouseY > 150 + navigation_score.height &&
+  mouseY < 150 + navigation_score.height + 20 + navigation_restart.height
+  )
+  {
+    // start timer
+    startTime=millis();
     
+    println("RESTART TO INTRO");
+    // change our game phase to 0
+    playMusicOnce = true;
+    gamePhase = 3;
+  }
+  
+  
+  // THE NEW MAP BUTTON
+  // if the user touches the new map button, go to the intro
+  if (
+  mousePressed == true &&
+  mouseX > 70 &&
+  mouseX < 70 + navigation_restart.width &&
+  mouseY > 150 + navigation_score.height + 20 + navigation_restart.height &&
+  mouseY < 150 + navigation_score.height + 20 + navigation_restart.height + 20 + navigation_newmap.height
+  )
+  {
     // reset portals
-    // start position
     myMap.portalX[0] = width-550;
     myMap.portalY[0] = 20;
     myMap.portalX[1] = width-500;
@@ -591,75 +690,9 @@ void lose()
     myMap.jumpY[1] = 20;
     myMap.jumpX[2] = width-50;
     myMap.jumpY[2] = 20;
-  
-    // pacKitty dies!
-    playMusicOnce = true;
-    gamePhase=6;
-  }
-}
-////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////
-// DEATH SCREEN
-// this is the screen you see when you die
-////////////////////////////////////////////////////////
-void showDeath()
-{
-  // show intro image!
-  background(screen);
-  
-  // BUTTON IMAGES
-  // show the continue button
-  pushStyle();
-    imageMode(CORNER);
-    image(navigation_score,
-          70,
-          150
-          );
-    image(navigation_restart,
-          70,
-          150 + navigation_score.height + 20
-          );
-  popStyle();
-  
-  // MUSIC
-  // play the music only once!
-  if(playMusicOnce == true)
-  {
-    player.setMediaFile("death.wav");
-    player.start();
-    playMusicOnce = false; 
-  }
-  
-  // THE SCORE BUTTON
-  // if the user touches the score button, show the score
-  if (
-  mousePressed == true &&
-  mouseX > 70 &&
-  mouseX < 70 + navigation_score.width &&
-  mouseY > 150 &&
-  mouseY < 150 + navigation_score.height
-  )
-  {
-    println("SCORE!");
-    // get the music ready
-    playMusicOnce = true;
-    // change our game phase to 7
-    gamePhase = 7;
-  }
-  
-  // THE RESET BUTTON
-  // if the user touches the restart button, go to the intro page
-  if (
-  mousePressed == true &&
-  mouseX > 90 &&
-  mouseX < 90 + navigation_restart.width &&
-  mouseY > 150 + navigation_score.height &&
-  mouseY < 150 + navigation_score.height + 20 + navigation_restart.height
-  )
-  {
-    println("RESTART TO INTRO");
+    
     // change our game phase to 0
+    println("RESTART TO GOALS");
     playMusicOnce = true;
     gamePhase = 0;
   }
@@ -695,17 +728,23 @@ void showScore()
     imageMode(CORNER);
     image(navigation_restart,
           width/2 - navigation_restart.width/2,
-          height/2 + navigation_restart.height + 70
+          height/2 + 100
+          );
+    image(navigation_newmap,
+          width/2 - navigation_restart.width/2,
+          height/2 + 100 + navigation_restart.height + 20
           );
   popStyle();
   
-  // if the user touches the screen, show our new goals
+  
+  // THE RESTART BUTTON IS THIS
+  // you go back to goals!
   if (
   mousePressed == true &&
   mouseX > width/2 - navigation_restart.width/2 &&
   mouseX < width/2 + navigation_restart.width/2 &&
-  mouseY > height/2 + navigation_restart.height + 70 &&
-  mouseY < height/2 + navigation_restart.height + 70 + navigation_restart.height
+  mouseY > height/2 + 100 &&
+  mouseY < height/2 + 100 + navigation_restart.height
   )
   {
     // reset character values
@@ -717,11 +756,63 @@ void showScore()
     myFood.total_ghostsEaten = 0;
     myFood.total_catNipEaten = 0;
     
+    // start timer
+    startTime=millis();
+    
+    // proceed to goals map!
+    gamePhase = 3;
+  }
+  
+  
+  // THE NEW MAP BUTTON IS THIS
+  // you go back to the introduction page!
+  if (
+  mousePressed == true &&
+  mouseX > width/2 - navigation_restart.width/2 &&
+  mouseX < width/2 + navigation_restart.width/2 &&
+  mouseY > height/2 + 100 + navigation_restart.height + 20 &&
+  mouseY < height/2 + 100 + navigation_restart.height + 20 + navigation_newmap.height
+  )
+  {
+    // reset character values
+    myFood.isCatHigh = false;
+    
+    // reset total score values
+    myFood.total_kibbleEaten = 0;
+    myFood.total_fishEaten = 0;
+    myFood.total_ghostsEaten = 0;
+    myFood.total_catNipEaten = 0;
+    
+    // reset portals
+    myMap.portalX[0] = width-550;
+    myMap.portalY[0] = 20;
+    myMap.portalX[1] = width-500;
+    myMap.portalY[1] = 20;
+    myMap.portalX[2] = width-450;
+    myMap.portalY[2] = 20;
+
+    // deathtraps
+    myMap.trapX[0] = width-350;
+    myMap.trapY[0] = 20;
+    myMap.trapX[1] = width-300;
+    myMap.trapY[1] = 20;
+    myMap.trapX[2] = width-250;
+    myMap.trapY[2] = 20;
+    
+    // jumps
+    myMap.jumpX[0] = width-150;
+    myMap.jumpY[0] = 20;
+    myMap.jumpX[1] = width-100;
+    myMap.jumpY[1] = 20;
+    myMap.jumpX[2] = width-50;
+    myMap.jumpY[2] = 20;
+    
     // proceed to intro map
     gamePhase = 0;
   }
   
-  // display your score
+  
+  // DISPLAY YOUR SCORE
   pushStyle();
     textAlign(CENTER);
     fill(0);      

@@ -185,7 +185,7 @@ class mapGenerator
     mouseY > 0 && 
     mouseY < menu_start_game.height
     )
-    {        
+    {         
       // make a new directory to save files
       File folder = new File("//sdcard/PacKitty/");
       folder.mkdirs();
@@ -212,15 +212,15 @@ class mapGenerator
     // if the format map button is pressed, blur our map
     if(
     mousePressed == true &&
-    mouseX > menu_save_this_map.width + 20 &&
-    mouseX < menu_save_this_map.width + 20 + menu_format_map.width &&
+    mouseX > menu_save_this_map.width + 50 &&
+    mouseX < menu_save_this_map.width + 50 + menu_format_map.width &&
     mouseY > 0 &&
     mouseY < menu_start_game.height
     )
-    { 
+    {        
         // blur map
         println("Blurring map");
-        blurMap();
+        //blurMap();
         
         background(startingMap);
         
@@ -236,8 +236,8 @@ class mapGenerator
     // get things ready to change screens
     if(
     mousePressed == true &&
-    mouseX > menu_save_this_map.width + 20 + menu_format_map.width + 20 &&
-    mouseX < menu_save_this_map.width + 20 + menu_format_map.width + 20 + menu_start_game.width &&
+    mouseX > menu_save_this_map.width + 50 + menu_format_map.width + 50 &&
+    mouseX < menu_save_this_map.width + 50 + menu_format_map.width + 50 + menu_start_game.width &&
     mouseY > 0 &&
     mouseY < menu_start_game.height
     )
@@ -256,6 +256,7 @@ class mapGenerator
         // make our images blank again
         menu_start_game = loadImage("menu_blank.png");
         menu_format_map = loadImage("menu_blank.png");
+        startingMap = loadImage("blankmap.png");
         
         // change map to previous
         menu_save_this_map = loadImage("menu_save-this-map.png");
@@ -344,9 +345,9 @@ class mapGenerator
     // save map
     image(menu_save_this_map, 10, 0);
     // format map
-    image(menu_format_map, menu_save_this_map.width + 20, 0);
+    image(menu_format_map, menu_save_this_map.width + 50, 0);
     // start game
-    image(menu_start_game, menu_save_this_map.width + 20 + menu_format_map.width + 20, 0);
+    image(menu_start_game, menu_save_this_map.width + 50 + menu_format_map.width + 50, 0);
     
     // draw walls
     image(menu_walls, width - menu_clearall.width - menu_eraser.width - menu_walls.width - 60, 0);

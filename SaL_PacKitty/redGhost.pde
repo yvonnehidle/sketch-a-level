@@ -19,6 +19,9 @@ class redGhost
   // ghost attractions
   float attractionToTarget;
   float desireToTraceHill;
+  float friction;
+  float frictionHill;
+  float frictionClear;
   boolean isCatHighRef;
   
   // ghost appearance
@@ -46,6 +49,10 @@ class redGhost
     ghostX = ghostXstart;
     ghostY = ghostYstart;
     ghostS = 5;
+    
+    // ghost attractions
+    frictionHill = 0.8;
+    frictionClear = 0.8;
     
     // ghost appearance
     red1 = color(255,0,0);
@@ -120,7 +127,7 @@ class redGhost
     }
     else
     {
-      attractionToTarget = 0.3;
+      attractionToTarget = 1;
       desireToTraceHill = 3.6;
     }
   
@@ -165,15 +172,25 @@ class redGhost
     }
     float Gh = sqrt(Gx*Gx + Gy*Gy);
     
+    
     // ON THE HILL GRADIENT
     if (Gh > 0) {
       float Gorientation = atan2 (Gy, Gx);
-      float avoidCrossing = pow(pixelValues[4], 0.001);
+      float avoidCrossing = pow(pixelValues[4], 0.05);
       float hx = avoidCrossing * desireToTraceHill * sin (Gorientation);
       float hy = avoidCrossing * desireToTraceHill * cos (Gorientation);
       float hh = sqrt(hx*hx + hy*hy); // hill force magnitude
       ghostVX = ghostVX + hx;
       ghostVY = ghostVY + hy;
+    
+      friction = frictionHill;
+    }
+    
+    
+    // GHOST IS NOT ON THE WALL
+    else
+    {
+      friction = frictionClear;
     }
     
     
@@ -182,8 +199,8 @@ class redGhost
     p_ghostY = ghostY;
     
     // lose our energy on each frame
-    ghostVX = ghostVX * 0.9;
-    ghostVY = ghostVY * 0.9;
+    ghostVX = ghostVX * friction;
+    ghostVY = ghostVY * friction;
     // integration
     ghostX = ghostX + ghostVX;
     ghostY = ghostY + ghostVY; 
@@ -193,23 +210,27 @@ class redGhost
     // if too far up
     if(ghostY-mySkin.ghostW/2 < 50)
     {
-      ghostY = 50 + mySkin.ghostW;
+      //ghostY = 50 + mySkin.ghostW;
+      ghostY = height - mySkin.ghostW;
     }
     // if too far down
     else if(ghostY+mySkin.ghostW/2 > height)
     {
-      ghostY = height - mySkin.ghostW;
+      //ghostY = height - mySkin.ghostW;
+      ghostY = 50 + mySkin.ghostW;
     }
     // if too far left
     else if(ghostX-mySkin.ghostW/2 < 0)
     {
-      ghostX = mySkin.ghostW;
+      //ghostX = mySkin.ghostW;
+      ghostX = width - mySkin.ghostW;
     }
     // if too far right
     else if(ghostX+mySkin.ghostW/2 > width)
     {
-      ghostX = width - mySkin.ghostW;
-    }   
+      //ghostX = width - mySkin.ghostW;
+      ghostX = mySkin.ghostW;
+    }  
   }
   ////////////////////////////////////////////////////////
   

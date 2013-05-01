@@ -178,66 +178,74 @@ class pacKitty
     // ON WALL
     // if the brightness of the pixel is less than our darkness threshold
     // then do not move the kitty
-//    if(brightness(drawnMap.pixels[loc]) < darknessThreshold)
-//    {
-//      if(mousePressed == true)
-//      {
-//        if(distanceX > 0)
-//        {
-//          kittyX = kittyX - kittyS;
-//        }
-//        if(distanceX < 0)
-//        {
-//          kittyX = kittyX + kittyS;
-//        }
-//        if(distanceY > 0)
-//        {
-//          kittyY = kittyY - kittyS;
-//        }
-//        if(distanceY < 0)
-//        {
-//          kittyY = kittyY + kittyS;
-//        }
-//      }
-//    }
-//    
-//    // NOT ON WALL
-//    // else always move the kitty
-//    else
-//    {
-//      if(mousePressed == true)
-//      {
-//        if(distanceX > 0)
-//        {
-//          kittyX = kittyX + kittyS;
-//        }
-//        if(distanceX < 0)
-//        {
-//          kittyX = kittyX - kittyS;
-//        }
-//        if(distanceY > 0)
-//        {
-//          kittyY = kittyY + kittyS;
-//        }
-//        if(distanceY < 0)
-//        {
-//          kittyY = kittyY - kittyS;
-//        }
-//      }
-//    }
-
-    // EASY CONTROL FOR TESTING PURPOSES
-    if(mousePressed == true)
+    if(brightness(drawnMap.pixels[loc]) < darknessThreshold)
     {
-      if(abs(distanceX) > 1)
+      if(mousePressed == true)
       {
-        kittyX += distanceX * kittyE;
-      }
-      if(abs(distanceY) > 1)
-      {
-        kittyY += distanceY * kittyE;
+        if(distanceX > 0)
+        {
+          kittyX = kittyX - kittyS;
+          if(distanceY > 0)
+          {
+            kittyY = kittyY - kittyS;
+          }
+          if(distanceY < 0)
+          {
+            kittyY = kittyY + kittyS;
+          }
+        }
+        if(distanceX < 0)
+        {
+          kittyX = kittyX + kittyS;
+          if(distanceY > 0)
+          {
+            kittyY = kittyY - kittyS;
+          }
+          if(distanceY < 0)
+          {
+            kittyY = kittyY + kittyS;
+          }
+        }
       }
     }
+    
+    // NOT ON WALL
+    // else always move the kitty
+    else
+    {
+      if(mousePressed == true)
+      {
+        if(distanceX > 0)
+        {
+          kittyX = kittyX + kittyS;
+        }
+        if(distanceX < 0)
+        {
+          kittyX = kittyX - kittyS;
+        }
+        if(distanceY > 0)
+        {
+          kittyY = kittyY + kittyS;
+        }
+        if(distanceY < 0)
+        {
+          kittyY = kittyY - kittyS;
+        }
+      }
+    }
+
+//    // EASY CONTROL FOR TESTING PURPOSES
+//    if(mousePressed == true)
+//    {
+//      if(abs(distanceX) > 1)
+//      {
+//        kittyX += distanceX * kittyE;
+//      }
+//      if(abs(distanceY) > 1)
+//      {
+//        kittyY += distanceY * kittyE;
+//      }
+//    }
     
     // CONSTRAIN KITTY TO THE BOUNDS OF THE MAP
     // if too far up
