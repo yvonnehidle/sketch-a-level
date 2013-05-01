@@ -4,7 +4,7 @@ color srcPixels[];
 color dstPixels[];
 
 void setup() {
-  size(1280, 800); 
+  size(400, 400); 
   background(255);
   myGraphics = createGraphics(width, height);
   dstPixels = new color[width * height];
@@ -17,7 +17,8 @@ void draw()
     myGraphics.strokeWeight (20);
     myGraphics.stroke (0); 
     myGraphics.smooth(); 
-    myGraphics.line (128, 40, 370, 500); 
+    myGraphics.line (128, 40, 370, 200); 
+    myGraphics.line (128, 40, 370, 50); 
     myGraphics.endDraw();
     
   if(mousePressed == true)
@@ -37,8 +38,10 @@ void blurDrawing() {
 
     for (int y=0; y<height; y++) {
       for (int x=0; x<width; x++) {
-
+        
         int row = (y*width) + x; 
+        
+        // for the 
         int i0 = row - 3;
         int i1 = row - 2;
         int i2 = row - 1;
