@@ -925,6 +925,9 @@ void specials()
 {
   // ALL THINGS PORTALS! 
   int[] myPort = new int[myMap.portalsMax];
+  int[] myPortBlue = new int[myMap.portalsMax];
+  int[] myPortGreen = new int[myMap.portalsMax];
+  int[] myPortRed = new int[myMap.portalsMax];
   
   // make them portal you!
   for(int i=0; i<myMap.portalsMax; i++)
@@ -937,6 +940,10 @@ void specials()
   
     // intialize distances from portal to kitty
     myPort[i] = int( dist(myKitty.kittyX,myKitty.kittyY,myMap.portalX[i],myMap.portalY[i]) );
+    // intialize distances from deathtrap to ghost
+    myPortBlue[i] = int( dist(myBlue.ghostX, myBlue.ghostY, myMap.portalX[i], myMap.portalY[i]) );
+    myPortGreen[i] = int( dist(myGreen.ghostX, myGreen.ghostY, myMap.portalX[i], myMap.portalY[i]) );
+    myPortRed[i] = int( dist(myRed.ghostX, myRed.ghostY, myMap.portalX[i], myMap.portalY[i]) );
     
     // if kitty overlaps our portal, port him properly
     if (myPort[i] < myMap.portalSize)
@@ -955,6 +962,63 @@ void specials()
       myKitty.kittyX = myMap.portalX[choosePortal] - 50;
       myKitty.kittyY = myMap.portalY[choosePortal] - 50;
       //println("PORT ME!");
+    }
+    
+    
+    // if blue overlaps our portal, port him properly
+    if (myPortBlue[i] < myMap.portalSize)
+    { 
+      // randomly roll a number
+      int choosePortal = int( random(0,3) );
+      
+      // if the portals are the same, reroll
+      if(myMap.portalX[i] == myMap.portalX[choosePortal])
+      {
+        //println("Portal the same, try again");
+        choosePortal = int( random(0,3) );
+      }
+      
+      // relocate the ghost
+      myBlue.ghostX = myMap.portalX[choosePortal] - 50;
+      myBlue.ghostY = myMap.portalY[choosePortal] - 50;
+    }
+    
+    
+    // if green overlaps our portal, port him properly
+    if (myPortGreen[i] < myMap.portalSize)
+    { 
+      // randomly roll a number
+      int choosePortal = int( random(0,3) );
+      
+      // if the portals are the same, reroll
+      if(myMap.portalX[i] == myMap.portalX[choosePortal])
+      {
+        //println("Portal the same, try again");
+        choosePortal = int( random(0,3) );
+      }
+      
+      // relocate the ghost
+      myGreen.ghostX = myMap.portalX[choosePortal] - 50;
+      myGreen.ghostY = myMap.portalY[choosePortal] - 50;
+    }
+    
+    
+    // if red overlaps our portal, port him properly
+    if (myPortRed[i] < myMap.portalSize)
+    { 
+      // randomly roll a number
+      int choosePortal = int( random(0,3) );
+      
+      // if the portals are the same, reroll
+      if(myMap.portalX[i] == myMap.portalX[choosePortal])
+      {
+        //println("Portal the same, try again");
+        choosePortal = int( random(0,3) );
+      }
+      
+      // relocate the ghost
+      myRed.ghostX = myMap.portalX[choosePortal] - 50;
+      myRed.ghostY = myMap.portalY[choosePortal] - 50;
     }
   }
   

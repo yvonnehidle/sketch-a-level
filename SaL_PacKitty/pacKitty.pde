@@ -51,7 +51,7 @@ class pacKitty
     lipTopClosed=false; // is packitty's top lip closed?
     
     // map related
-    darknessThreshold = 20;
+    darknessThreshold = 80;
     
     // check for problems!
     //println("LOAD ONCE: Kitty constructor");
@@ -197,21 +197,25 @@ class pacKitty
      {
        if(mousePressed == true)
        {
+         // go left
          if(distanceX > 0)
          {
-           kittyX = kittyX - kittyW/2;
+           kittyX = kittyX - kittyS;
          }
+         // go right
          else if(distanceX < 0)
          {
-           kittyX = kittyX + kittyW/2;
+           kittyX = kittyX + kittyS;
          }
+         // go up
          if(distanceY > 0)
          {
-           kittyY = kittyY - kittyW/2;
+           kittyY = kittyY - kittyS;
          }
+         // go down
          else if(distanceY < 0)
          {
-           kittyY = kittyY + kittyW/2;
+           kittyY = kittyY + kittyS;
          }
        }
      }
@@ -222,14 +226,35 @@ class pacKitty
    {
      if(mousePressed == true)
      {
-       if(abs(distanceX) > 1)
-       {
-         kittyX += distanceX * kittyE;
-       }
-       if(abs(distanceY) > 1)
-       {
-         kittyY += distanceY * kittyE;
-       }
+         // go right
+         if(distanceX > 0)
+         {
+           kittyX = kittyX + kittyS;
+         }
+         // go left
+         else if(distanceX < 0)
+         {
+           kittyX = kittyX - kittyS;
+         }
+         // go down
+         if(distanceY > 0)
+         {
+           kittyY = kittyY + kittyS;
+         }
+         // go up
+         else if(distanceY < 0)
+         {
+           kittyY = kittyY - kittyS;
+         }
+         
+//       if(abs(distanceX) > 1)
+//       {
+//         kittyX += distanceX * kittyE;
+//       }
+//       if(abs(distanceY) > 1)
+//       {
+//         kittyY += distanceY * kittyE;
+//       }
      }
    }
 
