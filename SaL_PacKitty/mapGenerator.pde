@@ -157,10 +157,34 @@ class mapGenerator
   {
     if(mouseY > 50 && mousePressed == true) 
     { 
+//      pushStyle();
+//        stroke(0,255);
+//        strokeWeight(20);
+//        line(pmouseX,pmouseY,mouseX,mouseY);
+//      popStyle();
+
       pushStyle();
-        stroke(0,255);
+        stroke(50,1);
+        strokeWeight(130);
+          line(pmouseX,pmouseY,mouseX,mouseY);
+        stroke(50,3);
+        strokeWeight(100);
+          line(pmouseX,pmouseY,mouseX,mouseY);
+        stroke(50,5);
+        strokeWeight(80);
+          line(pmouseX,pmouseY,mouseX,mouseY);
+        stroke(50,5);
+        strokeWeight(60);
+          line(pmouseX,pmouseY,mouseX,mouseY);
+        stroke(50,5);
+        strokeWeight(40);
+          line(pmouseX,pmouseY,mouseX,mouseY);
+        stroke(50,50);
         strokeWeight(20);
-        line(pmouseX,pmouseY,mouseX,mouseY);
+          line(pmouseX,pmouseY,mouseX,mouseY);
+        stroke(0,255);
+        strokeWeight(10);
+          line(pmouseX,pmouseY,mouseX,mouseY);
       popStyle();
     }
   }
@@ -388,7 +412,7 @@ class mapGenerator
   {      
     startingMap.loadPixels(); 
     srcPixels = startingMap.pixels;
-    int nPasses = 20; 
+    int nPasses = 5; 
     
     // FOR THE X DIRECTION PLEASE
     for (int p=0; p<nPasses; p++) 
