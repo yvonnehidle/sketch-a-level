@@ -183,7 +183,7 @@ class allFood
       
     // EAT THE FOOD
     // if kitty overlaps tastyfish, eat it!   
-    if (kittyEatFish < fishSize)
+    if (kittyEatFish < fishSize && isCatHigh == false)
     {
       // play eating sound
       player.setMediaFile("eatFish.mp3");

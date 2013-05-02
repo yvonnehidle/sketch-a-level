@@ -42,14 +42,14 @@ class greenGhost
   greenGhost()
   {
     // ghost movement
-    ghostXstart = 80;
-    ghostYstart = height-150;
+    ghostXstart = width/2;
+    ghostYstart = height/2;
     ghostX = ghostXstart;
     ghostY = ghostYstart;
     ghostS = 5;
     
     // ghost attractions
-    frictionHill = 0.8;
+    frictionHill = 0.7;
     frictionClear = 0.8;
     
     // ghost appearance

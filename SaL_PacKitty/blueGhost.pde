@@ -42,14 +42,14 @@ class blueGhost
   blueGhost()
   {
     // ghost movement
-    ghostXstart = 80;
-    ghostYstart = 130;
+    ghostXstart = width/2;
+    ghostYstart = height/2;
     ghostX = ghostXstart;
     ghostY = ghostYstart;
     
     // ghost attractions
     frictionHill = 0.8;
-    frictionClear = 0.8;
+    frictionClear = 0.7;
     
     // ghost appearance
     blue1 = color(33,108,203);

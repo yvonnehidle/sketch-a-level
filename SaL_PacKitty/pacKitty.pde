@@ -51,7 +51,7 @@ class pacKitty
     lipTopClosed=false; // is packitty's top lip closed?
     
     // map related
-    darknessThreshold = 150;
+    darknessThreshold = 60;
     
     // check for problems!
     //println("LOAD ONCE: Kitty constructor");
@@ -182,29 +182,25 @@ class pacKitty
     {
       if(mousePressed == true)
       {
+        // go left
         if(distanceX > 0)
         {
           kittyX = kittyX - kittyS;
-          if(distanceY > 0)
-          {
-            kittyY = kittyY - kittyS;
-          }
-          if(distanceY < 0)
-          {
-            kittyY = kittyY + kittyS;
-          }
         }
+        // go right
         if(distanceX < 0)
         {
           kittyX = kittyX + kittyS;
-          if(distanceY > 0)
-          {
-            kittyY = kittyY - kittyS;
-          }
-          if(distanceY < 0)
-          {
-            kittyY = kittyY + kittyS;
-          }
+        }
+        // go up
+        if(distanceY > 0)
+        {
+          kittyY = kittyY - kittyS;
+        }
+        // go down
+        if(distanceY < 0)
+        {
+          kittyY = kittyY + kittyS;
         }
       }
     }
@@ -215,37 +211,17 @@ class pacKitty
     {
       if(mousePressed == true)
       {
-        if(distanceX > 0)
+        if(abs(distanceX) > 1)
         {
-          kittyX = kittyX + kittyS;
+          kittyX += distanceX * kittyE;
         }
-        if(distanceX < 0)
+        if(abs(distanceY) > 1)
         {
-          kittyX = kittyX - kittyS;
-        }
-        if(distanceY > 0)
-        {
-          kittyY = kittyY + kittyS;
-        }
-        if(distanceY < 0)
-        {
-          kittyY = kittyY - kittyS;
+          kittyY += distanceY * kittyE;
         }
       }
     }
-
-//    // EASY CONTROL FOR TESTING PURPOSES
-//    if(mousePressed == true)
-//    {
-//      if(abs(distanceX) > 1)
-//      {
-//        kittyX += distanceX * kittyE;
-//      }
-//      if(abs(distanceY) > 1)
-//      {
-//        kittyY += distanceY * kittyE;
-//      }
-//    }
+    
     
     // CONSTRAIN KITTY TO THE BOUNDS OF THE MAP
     // if too far up

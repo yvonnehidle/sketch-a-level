@@ -220,7 +220,7 @@ class mapGenerator
     {        
         // blur map
         println("Blurring map");
-        //blurMap();
+        blurMap();
         
         background(startingMap);
         

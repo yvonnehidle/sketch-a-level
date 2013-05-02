@@ -29,6 +29,7 @@
   PImage navigation_score;
   PImage navigation_restart;
   PImage navigation_newmap;
+  PImage navigation_guide;
   
   // screen booleans
   boolean is_intro;
@@ -36,6 +37,7 @@
   boolean is_levelup;
   boolean is_death;
   boolean is_score;
+  boolean is_instructions;
   
   // general game variables
   int gamePhase;
@@ -79,6 +81,7 @@ void setup()
   navigation_score = loadImage("navigation_score.png");
   navigation_restart = loadImage("navigation_restart.png");
   navigation_newmap = loadImage("navigation_newmap.png");
+  navigation_guide = loadImage("navigation_guide.png");
   
   // screen booleans
   is_intro = true;
@@ -86,6 +89,7 @@ void setup()
   is_levelup = false;
   is_death = false;
   is_score = false;
+  is_instructions = false;
   
   // general game variables
   gamePhase=0;
@@ -246,6 +250,26 @@ void draw()
     is_score = false;
   }
   
+  // INSTRUCTIONS
+  // the game is explained!
+  else if(gamePhase == 8)
+  {
+    // make true
+    is_instructions = true;
+    
+    // load the score image
+    if(is_instructions == true)
+    {
+      screen = loadImage("screen_instructions.png");
+    }
+    
+    // show the score screen
+    showInstructions();
+    
+    // make false
+    is_instructions = false;
+  }
+  
   // check for problems!
   //println(frameRate);
 }
@@ -280,17 +304,23 @@ void showIntro()
   pushStyle();
     imageMode(CORNER);
     image(navigation_start,
-          width -  navigation_start.width - 20,
-          height - navigation_start.height - 70
+          width -  navigation_start.width - 15,
+          height - 60 - navigation_start.height
+          );
+    image(navigation_guide,
+          width -  navigation_guide.width - 15,
+          height - 60 - navigation_start.height - 10 - navigation_guide.height
           );
   popStyle();
   
+  
+  // START BUTTON
   // if the user touches the screen, start the map generator!
   if (
   mousePressed == true &&
-  mouseX > width - navigation_start.width - 20 &&
+  mouseX > width - navigation_start.width - 15 &&
   mouseX < width &&
-  mouseY > height - navigation_start.height - 70 &&
+  mouseY > height - 60 - navigation_start.height &&
   mouseY < height &&
   gamePhase == 0
   )
@@ -299,10 +329,68 @@ void showIntro()
     background(255);
     // proceed to drawing the map
     gamePhase = 1;
+    //println("START BUTTON");
+  }
+  
+  
+  // INSTRUCTIONS
+  // if the user touches the screen, start the map generator!
+  if (
+  mousePressed == true &&
+  mouseX > width - navigation_guide.width - 15 &&
+  mouseX < width &&
+  mouseY > height - 60 - navigation_start.height - 10 - navigation_guide.height &&
+  mouseY < height - 60 - navigation_start.height &&
+  gamePhase == 0
+  )
+  {
+    // proceed to drawing the map
+    gamePhase = 8;
+    //println("GUIDE BUTTON");
   }
   
   // check for problems!
   //println("LOOPING: Show introduction");
+}
+////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////
+// INSTRUCTION SCREEN
+// this is the screen with instructions!
+////////////////////////////////////////////////////////
+void showInstructions()
+{
+  // show intro image!
+  background(screen);
+  
+  // show the start button
+  pushStyle();
+    imageMode(CORNER);
+    image(navigation_start,
+          width -  navigation_start.width - 20,
+          height - navigation_start.height - 100
+          );
+  popStyle();
+  
+  // START BUTTON
+  // if the user touches the screen, start the map generator!
+  if (
+  mousePressed == true &&
+  mouseX > width - navigation_start.width - 20 &&
+  mouseX < width &&
+  mouseY > height - navigation_start.height - 100 &&
+  mouseY < height
+  )
+  {
+    // clear the background once, make it white
+    background(255);
+    // proceed to drawing the map
+    gamePhase = 1;
+    //println("START BUTTON");
+  }
+  
+  // check for problems!
+  //println("LOOPING: Show instructions");
 }
 ////////////////////////////////////////////////////////
 
@@ -555,9 +643,9 @@ void lose()
     goalGhosts = 0;
       
     // make the ghosts slow again
-    myBlue.frictionClear = 0.8;
-    myGreen.frictionClear = 0.8;
-    myRed.frictionClear = 0.8;
+    myBlue.frictionClear = 0.7;
+    myGreen.frictionClear = 0.7;
+    myRed.frictionClear = 0.7;
       
     // reset the character values!
     myBlue.ghostX = myBlue.ghostXstart;

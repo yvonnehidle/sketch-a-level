@@ -44,14 +44,14 @@ class redGhost
   redGhost()
   {
     // ghost movement
-    ghostXstart = width-90;
-    ghostYstart = 130;
+    ghostXstart = width/2;
+    ghostYstart = height/2;
     ghostX = ghostXstart;
     ghostY = ghostYstart;
     ghostS = 5;
     
     // ghost attractions
-    frictionHill = 0.8;
+    frictionHill = 0.7;
     frictionClear = 0.8;
     
     // ghost appearance
