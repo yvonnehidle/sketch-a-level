@@ -217,18 +217,19 @@ class mapGenerator
     mouseY > 0 &&
     mouseY < menu_start_game.height
     )
-    {        
-        // blur map
-        println("Blurring map");
-        blurMap();
+    { 
+      // blur map
+      println("Blurring map");
+      blurMap();
+      
+      // show blurred map
+      background(startingMap);
+      
+      // change the button, map is formatted
+      menu_format_map = loadImage("menu_map-formatted.png");
         
-        background(startingMap);
-        
-        // change the button, map is formatted
-        menu_format_map = loadImage("menu_map-formatted.png");
-        
-        // show our proceed button
-        menu_start_game = loadImage("menu_proceed.png");
+      // show our proceed button
+      menu_start_game = loadImage("menu_proceed.png");
     }
     
     

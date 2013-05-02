@@ -25,9 +25,7 @@
   PImage screen;
   PImage drawnMap;
   PImage navigation_start;
-  PImage navigation_continue;
   PImage navigation_score;
-  PImage navigation_restart;
   PImage navigation_newmap;
   PImage navigation_guide;
   
@@ -77,9 +75,7 @@ void setup()
   screen = loadImage("screen_intro.png");
   drawnMap = loadImage("blankmap.png");
   navigation_start = loadImage("navigation_start.png");
-  navigation_continue = loadImage("navigation_continue.png");
   navigation_score = loadImage("navigation_score.png");
-  navigation_restart = loadImage("navigation_restart.png");
   navigation_newmap = loadImage("navigation_newmap.png");
   navigation_guide = loadImage("navigation_guide.png");
   
@@ -138,6 +134,7 @@ void draw()
     if(is_intro == true)
     {
       screen = loadImage("screen_intro.png");
+      navigation_start = loadImage("navigation_start.png");
     }
     
     // show the introduction
@@ -201,6 +198,7 @@ void draw()
     if(is_levelup == true)
     {
       screen = loadImage("screen_levelup.png");
+      navigation_start = loadImage("navigation_continue.png");
     }
     
     // show the levelup screen
@@ -221,6 +219,7 @@ void draw()
     if(is_death == true)
     {
       screen = loadImage("screen_death.png");
+      navigation_start = loadImage("navigation_restart.png");
     }
     
     // show death screen
@@ -241,6 +240,7 @@ void draw()
     if(is_score == true)
     {
       screen = loadImage("screen_score.png");
+      navigation_start = loadImage("navigation_restart.png");
     }
     
     // show the score screen
@@ -261,6 +261,7 @@ void draw()
     if(is_instructions == true)
     {
       screen = loadImage("screen_instructions.png");
+      navigation_start = loadImage("navigation_start.png");
     }
     
     // show the score screen
@@ -271,7 +272,7 @@ void draw()
   }
   
   // check for problems!
-  //println(frameRate);
+  println(frameRate);
 }
 ////////////////////////////////////////////////////////
 
@@ -592,9 +593,9 @@ void levelUp()
   // show the continue button
   pushStyle();
     imageMode(CORNER);
-    image(navigation_continue,
-          width -  navigation_continue.width - 20,
-          height - navigation_continue.height - 70
+    image(navigation_start,
+          width -  navigation_start.width - 20,
+          height - navigation_start.height - 70
           );
   popStyle();
   
@@ -608,9 +609,9 @@ void levelUp()
   // if the user touches the screen, show our new goals
   if (
   mousePressed == true &&
-  mouseX > width - navigation_continue.width - 20 &&
+  mouseX > width - navigation_start.width - 20 &&
   mouseX < width &&
-  mouseY > height - navigation_continue.height - 70 &&
+  mouseY > height - navigation_start.height - 70 &&
   mouseY < height
   )
   {
@@ -688,7 +689,7 @@ void showDeath()
     playMusicOnce = false; 
   }
   
-  // BUTTON IMAGES
+  // BUTTON IMAGES 
   // show the continue button
   pushStyle();
     imageMode(CORNER);
@@ -696,13 +697,13 @@ void showDeath()
           70,
           150
           );
-    image(navigation_restart,
+    image(navigation_start,
           70,
           150 + navigation_score.height + 20
           );
     image(navigation_newmap,
           70,
-          150 + navigation_score.height + 20 + navigation_restart.height + 20
+          150 + navigation_score.height + 20 + navigation_start.height + 20
           );
   popStyle();
   
@@ -730,9 +731,9 @@ void showDeath()
   if (
   mousePressed == true &&
   mouseX > 70 &&
-  mouseX < 70 + navigation_restart.width &&
+  mouseX < 70 + navigation_start.width &&
   mouseY > 150 + navigation_score.height &&
-  mouseY < 150 + navigation_score.height + 20 + navigation_restart.height
+  mouseY < 150 + navigation_score.height + 20 + navigation_start.height
   )
   {
     // start timer
@@ -750,9 +751,9 @@ void showDeath()
   if (
   mousePressed == true &&
   mouseX > 70 &&
-  mouseX < 70 + navigation_restart.width &&
-  mouseY > 150 + navigation_score.height + 20 + navigation_restart.height &&
-  mouseY < 150 + navigation_score.height + 20 + navigation_restart.height + 20 + navigation_newmap.height
+  mouseX < 70 + navigation_start.width &&
+  mouseY > 150 + navigation_score.height + 20 + navigation_start.height &&
+  mouseY < 150 + navigation_score.height + 20 + navigation_start.height + 20 + navigation_newmap.height
   )
   {
     // reset portals
@@ -811,16 +812,16 @@ void showScore()
     playMusicOnce = false;
   }
   
-  // show the continue button
+  // show the continue button  
   pushStyle();
     imageMode(CORNER);
-    image(navigation_restart,
-          width/2 - navigation_restart.width/2,
+    image(navigation_start,
+          width/2 - navigation_start.width/2,
           height/2 + 100
           );
     image(navigation_newmap,
-          width/2 - navigation_restart.width/2,
-          height/2 + 100 + navigation_restart.height + 20
+          width/2 - navigation_start.width/2,
+          height/2 + 100 + navigation_start.height + 20
           );
   popStyle();
   
@@ -829,10 +830,10 @@ void showScore()
   // you go back to goals!
   if (
   mousePressed == true &&
-  mouseX > width/2 - navigation_restart.width/2 &&
-  mouseX < width/2 + navigation_restart.width/2 &&
+  mouseX > width/2 - navigation_start.width/2 &&
+  mouseX < width/2 + navigation_start.width/2 &&
   mouseY > height/2 + 100 &&
-  mouseY < height/2 + 100 + navigation_restart.height
+  mouseY < height/2 + 100 + navigation_start.height
   )
   {
     // reset character values
@@ -856,10 +857,10 @@ void showScore()
   // you go back to the introduction page!
   if (
   mousePressed == true &&
-  mouseX > width/2 - navigation_restart.width/2 &&
-  mouseX < width/2 + navigation_restart.width/2 &&
-  mouseY > height/2 + 100 + navigation_restart.height + 20 &&
-  mouseY < height/2 + 100 + navigation_restart.height + 20 + navigation_newmap.height
+  mouseX > width/2 - navigation_start.width/2 &&
+  mouseX < width/2 + navigation_start.width/2 &&
+  mouseY > height/2 + 100 + navigation_start.height + 20 &&
+  mouseY < height/2 + 100 + navigation_start.height + 20 + navigation_newmap.height
   )
   {
     // reset character values
@@ -950,8 +951,8 @@ void specials()
       }
       
       // relocate the kitty
-      myKitty.kittyX = myMap.portalX[choosePortal];
-      myKitty.kittyY = myMap.portalY[choosePortal];
+      myKitty.kittyX = myMap.portalX[choosePortal] - 50;
+      myKitty.kittyY = myMap.portalY[choosePortal] - 50;
       //println("PORT ME!");
     }
   }
@@ -959,6 +960,9 @@ void specials()
   
   // ALL THINGS DEATH TRAPS
   int[] myTrap = new int[myMap.trapsMax];
+  int[] myTrapBlue = new int[myMap.trapsMax];
+  int[] myTrapGreen = new int[myMap.trapsMax];
+  int[] myTrapRed = new int[myMap.trapsMax];
   
   for(int i=0; i<myMap.trapsMax; i++)
   {
@@ -970,11 +974,36 @@ void specials()
     
     // intialize distances from deathtrap to kitty
     myTrap[i] = int( dist(myKitty.kittyX, myKitty.kittyY, myMap.trapX[i], myMap.trapY[i]) );
+    // intialize distances from deathtrap to ghost
+    myTrapBlue[i] = int( dist(myBlue.ghostX, myBlue.ghostY, myMap.trapX[i], myMap.trapY[i]) );
+    myTrapGreen[i] = int( dist(myGreen.ghostX, myGreen.ghostY, myMap.trapX[i], myMap.trapY[i]) );
+    myTrapRed[i] = int( dist(myRed.ghostX, myRed.ghostY, myMap.trapX[i], myMap.trapY[i]) );
     
     // if kitty overlaps trap, then die
     if (myTrap[i] < myMap.trapSize)
     {
       gamePhase=6;
+    }
+    
+    // if blue ghost hits the trap, he must die!
+    if (myTrapBlue[i] < myMap.trapSize)
+    {
+      myBlue.ghostX = myBlue.ghostXstart;
+      myBlue.ghostY = myBlue.ghostYstart;
+    }
+    
+    // if green ghost hits the trap, he must die!
+    if (myTrapGreen[i] < myMap.trapSize)
+    {
+      myGreen.ghostX = myGreen.ghostXstart;
+      myGreen.ghostY = myGreen.ghostYstart;
+    }
+    
+    // if red ghost hits the trap, he must die!
+    if (myTrapRed[i] < myMap.trapSize)
+    {
+      myRed.ghostX = myRed.ghostXstart;
+      myRed.ghostY = myRed.ghostYstart;
     }
   }
   
