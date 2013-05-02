@@ -59,6 +59,10 @@
   PMediaPlayer player;
   PMediaPlayer player2;
   boolean playMusicOnce; 
+  
+  // miscellaneous
+  boolean isShrunk;
+  int startShrink;
 ////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////
@@ -109,9 +113,12 @@ void setup()
   player = new PMediaPlayer(this);
   player.setLooping(false);
   playMusicOnce = true;
-  
   player2 = new PMediaPlayer(this);
   player2.setLooping(false);
+  
+  // miscellaneous
+  isShrunk = false;
+  startShrink = 0;
   
   // check for problems!
   //println("LOAD ONCE: Drawing setup");
@@ -462,16 +469,16 @@ void playNow()
   
   // transfer variables from one class to another
   // to the red ghost
-  myRed.kittyRefX = myKitty.kittyX;
-  myRed.kittyRefY = myKitty.kittyY;
+  myRed.kittyRefX = myKitty.kittyX-50;
+  myRed.kittyRefY = myKitty.kittyY-50;
   myRed.isCatHighRef = myFood.isCatHigh;
   // to the blue ghost
   myBlue.kittyRefX = myKitty.kittyX;
   myBlue.kittyRefY = myKitty.kittyY;
   myBlue.isCatHighRef = myFood.isCatHigh;
   // to the blue ghost
-  myGreen.kittyRefX = myKitty.kittyX;
-  myGreen.kittyRefY = myKitty.kittyY;
+  myGreen.kittyRefX = myKitty.kittyX+50;
+  myGreen.kittyRefY = myKitty.kittyY+50;
   myGreen.isCatHighRef = myFood.isCatHigh;
   // to the food class
   myFood.kittyRefX = myKitty.kittyX;
@@ -491,7 +498,7 @@ void playNow()
   myBlue.play();
   myGreen.play();
   
-  // spawn portals, death traps, wall jumps oh my!
+  // spawn portals, death traps, wall shrinks oh my!
   specials();
   eatGhosts();
   
@@ -763,22 +770,22 @@ void showDeath()
     myMap.portalY[1] = 20;
     myMap.portalX[2] = width-450;
     myMap.portalY[2] = 20;
-
-    // deathtraps
+    
+    // reset deathtraps
     myMap.trapX[0] = width-350;
     myMap.trapY[0] = 20;
     myMap.trapX[1] = width-300;
     myMap.trapY[1] = 20;
     myMap.trapX[2] = width-250;
     myMap.trapY[2] = 20;
+    myMap.trapX[3] = width-200;
+    myMap.trapY[3] = 20;
+    myMap.trapX[4] = width-150;
+    myMap.trapY[4] = 20;
     
-    // jumps
-    myMap.jumpX[0] = width-150;
-    myMap.jumpY[0] = 20;
-    myMap.jumpX[1] = width-100;
-    myMap.jumpY[1] = 20;
-    myMap.jumpX[2] = width-50;
-    myMap.jumpY[2] = 20;
+    // reset shrinks
+    myMap.shrinkX[0] = width-50;
+    myMap.shrinkY[0] = 20;
     
     // change our game phase to 0
     println("RESTART TO GOALS");
@@ -866,12 +873,6 @@ void showScore()
     // reset character values
     myFood.isCatHigh = false;
     
-    // reset total score values
-    myFood.total_kibbleEaten = 0;
-    myFood.total_fishEaten = 0;
-    myFood.total_ghostsEaten = 0;
-    myFood.total_catNipEaten = 0;
-    
     // reset portals
     myMap.portalX[0] = width-550;
     myMap.portalY[0] = 20;
@@ -879,22 +880,22 @@ void showScore()
     myMap.portalY[1] = 20;
     myMap.portalX[2] = width-450;
     myMap.portalY[2] = 20;
-
-    // deathtraps
+    
+    // reset deathtraps
     myMap.trapX[0] = width-350;
     myMap.trapY[0] = 20;
     myMap.trapX[1] = width-300;
     myMap.trapY[1] = 20;
     myMap.trapX[2] = width-250;
     myMap.trapY[2] = 20;
+    myMap.trapX[3] = width-200;
+    myMap.trapY[3] = 20;
+    myMap.trapX[4] = width-150;
+    myMap.trapY[4] = 20;
     
-    // jumps
-    myMap.jumpX[0] = width-150;
-    myMap.jumpY[0] = 20;
-    myMap.jumpX[1] = width-100;
-    myMap.jumpY[1] = 20;
-    myMap.jumpX[2] = width-50;
-    myMap.jumpY[2] = 20;
+    // reset shrinks
+    myMap.shrinkX[0] = width-50;
+    myMap.shrinkY[0] = 20;
     
     // proceed to intro map
     gamePhase = 0;
@@ -982,6 +983,12 @@ void specials()
     // if kitty overlaps trap, then die
     if (myTrap[i] < myMap.trapSize)
     {
+      // reset the cat values
+      myKitty.kittyX = myKitty.kittyXstart;
+      myKitty.kittyY = myKitty.kittyYstart;
+      myFood.isCatHigh = false;
+      
+      // die!
       gamePhase=6;
     }
     
@@ -1008,23 +1015,42 @@ void specials()
   }
   
   
-  // ALL THINGS FOR WALL JUMPS
-  int[] myJump = new int[myMap.jumpsMax];
+  // ALL THINGS FOR SHRINKS
+  int[] myShrink = new int[myMap.shrinkMax];
+  int countDown = 10000;
   
-  for(int i=0; i<myMap.jumpsMax; i++)
+  for(int i=0; i<myMap.shrinkMax; i++)
   {
     // draw them now, only if not on menu
-    if(myMap.jumpY[i] > 50)
+    if(myMap.shrinkY[i] > 50)
     {
-      image(myMap.character_jump,myMap.jumpX[i],myMap.jumpY[i],myMap.jumpSize,myMap.jumpSize);
+      image(myMap.character_shrink,myMap.shrinkX[i],myMap.shrinkY[i],myMap.shrinkSize,myMap.shrinkSize);
     }
     
-    // intialize distances from jump to kitty
-    myJump[i] = int( dist(myKitty.kittyX, myKitty.kittyY, myMap.jumpX[i], myMap.jumpY[i]) );
+    // intialize distances from shrink to kitty
+    myShrink[i] = int( dist(myKitty.kittyX, myKitty.kittyY, myMap.shrinkX[i], myMap.shrinkY[i]) );
     
-    // if kitty overlaps jump, then....
-    if (myJump[i] < myMap.jumpSize)
+    // if kitty overlaps shrink, then....
+    if (myShrink[i] < myMap.shrinkSize && isShrunk == false)
     {
+      // cat grows
+      player2.setMediaFile("catnip-shrink.wav");
+      player2.start();
+      
+      // start high timer
+      startShrink = millis();
+      
+      // is shrunk is true
+      isShrunk = true;      
+    }
+    
+    if ((millis()-startShrink) > countDown)
+    {
+      // cat shrinks
+      player2.setMediaFile("catnip-grow.wav");
+      
+      // cat is big again
+      isShrunk = false;
     }
   }
 }

@@ -51,7 +51,7 @@ class pacKitty
     lipTopClosed=false; // is packitty's top lip closed?
     
     // map related
-    darknessThreshold = 60;
+    darknessThreshold = 150;
     
     // check for problems!
     //println("LOAD ONCE: Kitty constructor");
@@ -148,6 +148,21 @@ class pacKitty
       shape(packitty, -7, -3, 100*grow, 100*grow);
     }
     
+    // IS CAT SHRUNK?
+    else if(isShrunk == true)
+    {
+      //make the cat shrink!
+      float shrink = .7;
+      
+      // packitty's body & mouth
+      fill(137, 172, 191);
+      arc(0, 0, kittyW*shrink, kittyH*shrink, lipBottom, lipTop);
+      
+      // packitty's accessories!
+      shapeMode(CENTER);
+      shape(packitty, -7, -3, 100*shrink, 100*shrink);
+    }
+    
     // ELSE THE CAT IS NORMAL
     else
     {
@@ -178,35 +193,44 @@ class pacKitty
     // ON WALL
     // if the brightness of the pixel is less than our darkness threshold
     // then do not move the kitty
-//     if(brightness(drawnMap.pixels[loc]) < darknessThreshold)
-//     {
-//       if(mousePressed == true)
-//       {
-//         if(distanceX > 0)
-//         {
-//           kittyX = kittyX - kittyS;
-//         }
-//         else if(distanceX < 0)
-//         {
-//           kittyX = kittyX + kittyS;
-//         }
-//         if(distanceY > 0)
-//         {
-//           kittyY = kittyY - kittyS;
-//         }
-//         else if(distanceY < 0)
-//         {
-//           kittyY = kittyY + kittyS;
-//         }
-//       }
-//     }
-//  
-//   // NOT ON WALL
-//   // else always move the kitty
-//   else
-//   {
-//     if(mousePressed == true)
-//     {
+     if(brightness(drawnMap.pixels[loc]) < darknessThreshold)
+     {
+       if(mousePressed == true)
+       {
+         if(distanceX > 0)
+         {
+           kittyX = kittyX - kittyS;
+         }
+         else if(distanceX < 0)
+         {
+           kittyX = kittyX + kittyS;
+         }
+         if(distanceY > 0)
+         {
+           kittyY = kittyY - kittyS;
+         }
+         else if(distanceY < 0)
+         {
+           kittyY = kittyY + kittyS;
+         }
+       }
+     }
+  
+   // NOT ON WALL
+   // else always move the kitty
+   else
+   {
+     if(mousePressed == true)
+     {
+       if(abs(distanceX) > 1)
+      {
+        kittyX += distanceX * kittyE;
+      }
+      if(abs(distanceY) > 1)
+      {
+        kittyY += distanceY * kittyE;
+      }
+      
 //       if(distanceX > 0)
 //       {
 //         kittyX = kittyX + kittyS;
@@ -223,22 +247,22 @@ class pacKitty
 //       {
 //         kittyY = kittyY - kittyS;
 //       }
-//     }
-//   }
+     }
+   }
 
 
-    // EASY CONTROL FOR TESTING PURPOSES
-    if(mousePressed == true)
-    {
-      if(abs(distanceX) > 1)
-      {
-        kittyX += distanceX * kittyE;
-      }
-      if(abs(distanceY) > 1)
-      {
-        kittyY += distanceY * kittyE;
-      }
-    }
+//    // EASY CONTROL FOR TESTING PURPOSES
+//    if(mousePressed == true)
+//    {
+//      if(abs(distanceX) > 1)
+//      {
+//        kittyX += distanceX * kittyE;
+//      }
+//      if(abs(distanceY) > 1)
+//      {
+//        kittyY += distanceY * kittyE;
+//      }
+//    }
     
     
     // CONSTRAIN KITTY TO THE BOUNDS OF THE MAP

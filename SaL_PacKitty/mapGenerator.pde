@@ -17,6 +17,10 @@ class mapGenerator
   PImage menu_eraser;
   PImage menu_clearall;
   
+  // platforms
+  PImage platform_cat;
+  PImage platform_ghost;
+  
   // booleans for menu
   boolean is_map_drawn;
   boolean is_walls;
@@ -31,18 +35,18 @@ class mapGenerator
   PImage character_portal;
   
   // death traps
-  final int trapsMax = 3;
+  final int trapsMax = 5;
   int[] trapX = new int[trapsMax];
   int[] trapY = new int[trapsMax];
   float trapSize;
   PImage character_deathtrap;
   
-  // wall jumps
-  final int jumpsMax = 3;
-  int[] jumpX = new int[jumpsMax];
-  int[] jumpY = new int[jumpsMax];
-  float jumpSize;
-  PImage character_jump;
+  // wall shrink
+  final int shrinkMax = 1;
+  int[] shrinkX = new int[shrinkMax];
+  int[] shrinkY = new int[shrinkMax];
+  float shrinkSize;
+  PImage character_shrink;
     
   ////////////////////////////////////////////////////////
   // THE CONSTRUCTOR
@@ -59,6 +63,10 @@ class mapGenerator
     menu_walls = loadImage("menu_walls-selected.png");               // walls button
     menu_eraser = loadImage("menu_eraser.png");                      // eraser button
     menu_clearall = loadImage("menu_clearall.png");                  // clear all button
+    
+    // platforms
+    platform_cat = loadImage("platform_cat.png");
+    platform_ghost = loadImage("platform_ghost.png");
     
     // booleans for map making
     is_map_drawn = false;
@@ -86,18 +94,18 @@ class mapGenerator
     trapY[1] = 20;
     trapX[2] = width-250;
     trapY[2] = 20;
+    trapX[3] = width-200;
+    trapY[3] = 20;
+    trapX[4] = width-150;
+    trapY[4] = 20;
     trapSize = 30;
     character_deathtrap = loadImage("character_deathtrap.png");
     
-    // jumps
-    jumpX[0] = width-150;
-    jumpY[0] = 20;
-    jumpX[1] = width-100;
-    jumpY[1] = 20;
-    jumpX[2] = width-50;
-    jumpY[2] = 20;
-    jumpSize = 30;
-    character_jump = loadImage("character_jump.png");
+    // shrink
+    shrinkX[0] = width-50;
+    shrinkY[0] = 20;
+    shrinkSize = 30;
+    character_shrink = loadImage("character_shrink.png");
     
     // check for problems!
     //println("LOAD ONCE: Map generator constructor");
@@ -117,6 +125,10 @@ class mapGenerator
     noStroke();
     fill(0);
     imageMode(CORNER);
+    
+    // PLATFORMS
+    image(platform_ghost, width/2, height/2);
+    image(platform_cat, width-150, height-200);
    
     // DRAWING MENU
     pushStyle();
@@ -143,7 +155,7 @@ class mapGenerator
   ////////////////////////////////////////////////////////
   void drawWalls()
   {
-    if(mouseY > 100 && mousePressed == true) 
+    if(mouseY > 50 && mousePressed == true) 
     { 
       pushStyle();
         stroke(0,255);
@@ -160,7 +172,7 @@ class mapGenerator
   ////////////////////////////////////////////////////////
   void drawEraser()
   {
-    if(mouseY > 100 && mousePressed == true) 
+    if(mouseY > 50 && mousePressed == true) 
     { 
       pushStyle();
         stroke(255,255);
@@ -218,6 +230,10 @@ class mapGenerator
     mouseY < menu_start_game.height
     )
     { 
+      // change the button, map is formatted
+      menu_format_map = loadImage("menu_formatting.png");
+      image(menu_format_map, menu_save_this_map.width + 50, 0);
+
       // blur map
       println("Blurring map");
       blurMap();
@@ -369,14 +385,14 @@ class mapGenerator
   // BLUR DRAWN MAP
   ////////////////////////////////////////////////////////
   void blurMap()
-  {
+  {      
     startingMap.loadPixels(); 
     srcPixels = startingMap.pixels;
     int nPasses = 20; 
     
     // FOR THE X DIRECTION PLEASE
     for (int p=0; p<nPasses; p++) 
-    {
+    {      
       for (int y=0; y<height; y++) 
       {
         for (int x=0; x<width; x++) 
@@ -488,7 +504,7 @@ class mapGenerator
       
     drawPortals();
     drawDeathtraps();
-    drawWalljump();
+    drawWallshrink();
     
     // CHECK FOR PROBLEMS
     //println(trapX);
@@ -609,38 +625,38 @@ class mapGenerator
   ////////////////////////////////////////////////////////
   
   ////////////////////////////////////////////////////////
-  // WALL JUMP
-  // wall jump lets you jump over a wall for a period of time
+  // WALL shrink
+  // wall shrink lets you shrink for a period of time
   ////////////////////////////////////////////////////////
-  void drawWalljump()
+  void drawWallshrink()
   {
     imageMode(CENTER);
-    int[] moveJump = new int[jumpsMax];
+    int[] moveshrink = new int[shrinkMax];
     
     // move the portals by dragging and dropping
-    for(int i=0; i<jumpsMax; i++)
+    for(int i=0; i<shrinkMax; i++)
     {
-      moveJump[i] = int( dist(mouseX, mouseY, jumpX[i], jumpY[i]) );
+      moveshrink[i] = int( dist(mouseX, mouseY, shrinkX[i], shrinkY[i]) );
      
      // lock to mouseX and mouseY
-     if (moveJump[i] < jumpSize && mousePressed == true)
+     if (moveshrink[i] < shrinkSize && mousePressed == true)
      {
-       jumpX[i] = mouseX;
-       jumpY[i] = mouseY;
+       shrinkX[i] = mouseX;
+       shrinkY[i] = mouseY;
      }
      
      // shrink traps when they are on the menu
-     if(jumpY[i] > 50)
+     if(shrinkY[i] > 50)
      {
-       jumpSize = 50;
+       shrinkSize = 50;
      }
      else
      {
-       jumpSize=30;
+       shrinkSize=30;
      }
      
       // show the portals
-      image(character_jump,jumpX[i],jumpY[i],jumpSize,jumpSize);
+      image(character_shrink,shrinkX[i],shrinkY[i],shrinkSize,shrinkSize);
     }
   }
   ////////////////////////////////////////////////////////  

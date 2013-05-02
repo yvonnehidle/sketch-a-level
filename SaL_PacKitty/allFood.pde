@@ -256,12 +256,11 @@ class allFood
     
     if ((millis()-startHigh) > countDown)
     {
-      // cat is not high
-      isCatHigh = false;
-      
       // cat shrinks
       player2.setMediaFile("catnip-shrink.wav");
-      //player2.start();
+      
+      // cat is not high
+      isCatHigh = false;
     }
   }
   ////////////////////////////////////////////////////////
